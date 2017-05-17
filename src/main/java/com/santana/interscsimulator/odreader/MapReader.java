@@ -1,7 +1,5 @@
 package com.santana.interscsimulator.odreader;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +21,15 @@ import org.xml.sax.SAXException;
 
 import com.santana.interscsimulator.db.Connector;
 import com.santana.interscsimulator.entity.MapPoint;
+
+/**
+ * 
+ * This file reads an open street maps file and saves all the nodes and links to a PostgreSQL database.
+ * It is done to use the find the closest point in a graph method from the database.
+ * 
+ * @author ezamb
+ *
+ */
 
 public class MapReader {
 	
