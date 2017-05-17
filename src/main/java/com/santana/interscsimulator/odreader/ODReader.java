@@ -16,6 +16,13 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import com.santana.interscsimulator.db.Connector;
 import com.santana.interscsimulator.entity.Point;
 
+/**
+ * This file reads the OD matrix created by the subway company of Sao Paulo. You can 
+ * find this matrix on the company's site. http://www.metro.sp.gov.br/
+ * 
+ * @author ezambomsantana
+ *
+ */
 public class ODReader {
 
 	private static final String fileName = "C:/dev/matriz.xlsx";
@@ -118,7 +125,7 @@ public class ODReader {
 
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
-			System.out.println("Arquivo Excel n„o encontrado!");
+			System.out.println("Arquivo Excel n√£o encontrado!");
 		}
 	}
 	
