@@ -2,14 +2,18 @@ package com.santana.interscsimulator.odreader;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 
+import com.santana.interscsimulator.db.Connector;
 import com.santana.interscsimulator.entity.Hospital;
 
 public class HospitalReader {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws FileNotFoundException, UnsupportedEncodingException {
 		
 		File file = new File("c:/dev/cenario_simulador/estab_saude.csv");
 		BufferedReader reader = null;
@@ -40,6 +44,9 @@ public class HospitalReader {
 		File fileHospitals = new File("c:/dev/cenario_simulador/health_centres.csv");
 		reader = null;
 		
+		PrintWriter writer = new PrintWriter("c:/dev/hospitals.xml", "UTF-8");
+	    writer.println("<scsimulator_hospitals>");
+		
 		try {
 		    reader = new BufferedReader(new FileReader(fileHospitals));
 		    String text = null;
@@ -50,8 +57,31 @@ public class HospitalReader {
 		    	
 		    	String [] dados = text.split(",");
 		    	if (hospitalList.get(dados[0]) != null) {
+		    		
+		    		Hospital hospital = hospitalList.get(dados[0]);
+		    		
+					long [] idsOrigin = null;
+					int dist = 1000;
+					while (idsOrigin == null) {
+						idsOrigin = Connector.selectNearestPoint(hospital.getLat() , hospital.getLon() , dist);
+						dist = dist * 5;
+					}
+					
+					hospital.setIdNode(idsOrigin[0]);
+		    		
 		    		System.out.println("achou!");
 		    		count++;
+		    		
+					StringBuilder sb = new StringBuilder();
+					
+					sb.append("   <hospital name=\"");
+					sb.append(hospital.getNome());
+					sb.append("\" location=\"");
+					sb.append(hospital.getIdNode());
+					sb.append("\" id=\"");
+					sb.append(hospital.getId());
+					sb.append("\" />");
+				    writer.println(sb.toString());		    		
 		    	}
 
 		    
@@ -60,6 +90,10 @@ public class HospitalReader {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		
+	    writer.println("</scsimulator_hospitals>");
+		
+	    writer.close();
 
 		
 
