@@ -15,17 +15,22 @@ public class TravelGenerator {
 
 		try {
 
-			File fXmlFile = new File("c:/dev/map.xml");
+			File mapFile = new File("c:/dev/map.xml");
+			File hospitalFile = new File("c:/dev/hospitals.xml");
+			
 			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-			Document doc = dBuilder.parse(fXmlFile);
+			Document docMap = dBuilder.parse(mapFile);
+			Document docHospital = dBuilder.parse(hospitalFile);
 
 			StringBuilder sb = new StringBuilder();
 			sb.append("<scsimulator_matrix>\n");
 
-			doc.getDocumentElement().normalize();
+			docMap.getDocumentElement().normalize();
+			docHospital.getDocumentElement().normalize();
 
-			NodeList nList = doc.getElementsByTagName("link");
+			NodeList nList = docMap.getElementsByTagName("link");
+			NodeList nListHospital = docHospital.getElementsByTagName("hospital");
 
 			for (int temp = 0; temp < 30000; temp++) {
 
@@ -44,25 +49,56 @@ public class TravelGenerator {
 				String id = eElement.getAttribute("id");
 				String idFrom = eElement.getAttribute("from");
 				String idTo = eElementTo.getAttribute("to");
-
-				sb.append("<trip origin=\"");
-				sb.append(idFrom);
-				sb.append("\" link_origin=\"");
-				sb.append(id);
-				sb.append("\" destination=\"");
-				sb.append(idTo);
-				sb.append("\" count=\"");
-				sb.append(count + 1);
-				sb.append("\" start=\"");
-				sb.append(start + 1);
+				
 				if (temp < 15000) {
+					sb.append("<trip origin=\"");
+					sb.append(idFrom);
+					sb.append("\" link_origin=\"");
+					sb.append(id);
+					sb.append("\" destination=\"");
+					sb.append(idTo);
+					sb.append("\" count=\"");
+					sb.append(count + 1);
+					sb.append("\" start=\"");
+					sb.append(start + 1);
 					sb.append("\" type=\"work\"");
+					sb.append("/>\n");
 				} else if (temp < 29800) {
-					sb.append("\" type=\"home\"");					
+					sb.append("<trip origin=\"");
+					sb.append(idFrom);
+					sb.append("\" link_origin=\"");
+					sb.append(id);
+					sb.append("\" destination=\"");
+					sb.append(idTo);
+					sb.append("\" count=\"");
+					sb.append(count + 1);
+					sb.append("\" start=\"");
+					sb.append(start + 1);
+					sb.append("\" type=\"home\"");
+					sb.append("/>\n");				
 				} else if (temp < 30100) {
-					sb.append("\" type=\"hospital\"");					
+
+					int idHospital = (int) (Math.random() * nListHospital.getLength());
+					Node hospital = nListHospital.item(idHospital);
+					
+					eElement = (Element) hospital;
+					
+					String nodeHospital = eElement.getAttribute("location");
+					
+					sb.append("<trip origin=\"");
+					sb.append(idFrom);
+					sb.append("\" link_origin=\"");
+					sb.append(id);
+					sb.append("\" destination=\"");
+					sb.append(nodeHospital);
+					sb.append("\" count=\"");
+					sb.append(count + 1);
+					sb.append("\" start=\"");
+					sb.append(start + 1);
+					sb.append("\" type=\"hospital\"");
+					sb.append("/>\n");
+								
 				}
-				sb.append("/>\n");
 
 			}
 			sb.append("</scsimulator_matrix>");
