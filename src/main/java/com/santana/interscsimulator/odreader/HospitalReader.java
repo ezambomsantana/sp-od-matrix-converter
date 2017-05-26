@@ -6,7 +6,9 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import com.santana.interscsimulator.db.Connector;
 import com.santana.interscsimulator.entity.Hospital;
@@ -46,6 +48,8 @@ public class HospitalReader {
 		
 		PrintWriter writer = new PrintWriter("c:/dev/hospitals.xml", "UTF-8");
 	    writer.println("<scsimulator_hospitals>");
+	    
+	    List<Hospital> hospitals = new ArrayList<Hospital>();
 		
 		try {
 		    reader = new BufferedReader(new FileReader(fileHospitals));
@@ -81,7 +85,9 @@ public class HospitalReader {
 					sb.append("\" id=\"");
 					sb.append(hospital.getId());
 					sb.append("\" />");
-				    writer.println(sb.toString());		    		
+				    writer.println(sb.toString());
+				    
+				    hospitals.add(hospital);
 		    	}
 
 		    
@@ -90,6 +96,8 @@ public class HospitalReader {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		
+		Connector.insertHospitals(hospitals);
 		
 	    writer.println("</scsimulator_hospitals>");
 		
