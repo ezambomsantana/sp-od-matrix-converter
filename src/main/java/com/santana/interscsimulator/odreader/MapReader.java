@@ -54,6 +54,9 @@ public class MapReader {
 			Node nNode = nList.item(temp);
 
 			if (nNode.getNodeType() == Node.ELEMENT_NODE) {
+				
+				System.out.println(temp);
+				
 
 				MapPoint mapPoint = new MapPoint();
 				Element eElement = (Element) nNode;
@@ -68,13 +71,12 @@ public class MapReader {
 				mapPoint.setLat(Float.parseFloat(y));
 				mapPoint.setLon(Float.parseFloat(x));
 				mapPoint.setIdLink(Long.parseLong(nl.getAttribute("id")));
-				points.add(mapPoint);
+				Connector.insertPoint(mapPoint);
 				
 			}
 
 		}
 		
-		Connector.insertPoints(points);
 
 	}
 
