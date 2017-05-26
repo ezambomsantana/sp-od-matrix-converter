@@ -4,6 +4,10 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.DocumentBuilder;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
+
+import com.santana.interscsimulator.db.Connector;
+import com.santana.interscsimulator.entity.MapPoint;
+
 import org.w3c.dom.Node;
 import org.w3c.dom.Element;
 import java.io.File;
@@ -32,7 +36,7 @@ public class TravelGenerator {
 			NodeList nList = docMap.getElementsByTagName("link");
 			NodeList nListHospital = docHospital.getElementsByTagName("hospital");
 
-			for (int temp = 0; temp < 30000; temp++) {
+			for (int temp = 0; temp < 1000; temp++) {
 
 				int nOrigin = (int) (Math.random() * nList.getLength());
 				int nDestination = (int) (Math.random() * nList.getLength());
@@ -50,7 +54,7 @@ public class TravelGenerator {
 				String idFrom = eElement.getAttribute("from");
 				String idTo = eElementTo.getAttribute("to");
 				
-				if (temp < 15000) {
+				if (temp < 500) {
 					sb.append("<trip origin=\"");
 					sb.append(idFrom);
 					sb.append("\" link_origin=\"");
@@ -63,7 +67,7 @@ public class TravelGenerator {
 					sb.append(start + 1);
 					sb.append("\" type=\"work\"");
 					sb.append("/>\n");
-				} else if (temp < 29800) {
+				} else if (temp < 900) {
 					sb.append("<trip origin=\"");
 					sb.append(idFrom);
 					sb.append("\" link_origin=\"");
@@ -76,21 +80,17 @@ public class TravelGenerator {
 					sb.append(start + 1);
 					sb.append("\" type=\"home\"");
 					sb.append("/>\n");				
-				} else if (temp < 30100) {
-
-					int idHospital = (int) (Math.random() * nListHospital.getLength());
-					Node hospital = nListHospital.item(idHospital);
-					
-					eElement = (Element) hospital;
-					
-					String nodeHospital = eElement.getAttribute("location");
+				} else if (temp < 1010) {
+															
+					MapPoint ponto = Connector.getPointById(idFrom);
+					long idHospital = Connector.selectNearestHospital(ponto.getLat(), ponto.getLon(), 10000);
 					
 					sb.append("<trip origin=\"");
 					sb.append(idFrom);
 					sb.append("\" link_origin=\"");
 					sb.append(id);
 					sb.append("\" destination=\"");
-					sb.append(nodeHospital);
+					sb.append(idHospital);
 					sb.append("\" count=\"");
 					sb.append(count + 1);
 					sb.append("\" start=\"");
