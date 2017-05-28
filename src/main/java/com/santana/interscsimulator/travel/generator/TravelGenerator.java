@@ -66,7 +66,7 @@ public class TravelGenerator {
 					sb.append("\" start=\"");
 					sb.append(start + 1);
 					sb.append("\" type=\"work\"");
-					sb.append("\" mode=\"car\"");
+					sb.append(" mode=\"car\"");
 					sb.append("/>\n");
 				} else if (temp < 900) {
 					sb.append("<trip origin=\"");
@@ -80,7 +80,7 @@ public class TravelGenerator {
 					sb.append("\" start=\"");
 					sb.append(start + 1);
 					sb.append("\" type=\"home\"");
-					sb.append("\" mode=\"car\"");
+					sb.append(" mode=\"car\"");
 					sb.append("/>\n");				
 				} else if (temp < 1010) {
 															
@@ -98,7 +98,7 @@ public class TravelGenerator {
 					sb.append("\" start=\"");
 					sb.append(start + 1);
 					sb.append("\" type=\"hospital\"");
-					sb.append("\" mode=\"car\"");
+					sb.append(" mode=\"car\"");
 					sb.append("/>\n");
 								
 				}
