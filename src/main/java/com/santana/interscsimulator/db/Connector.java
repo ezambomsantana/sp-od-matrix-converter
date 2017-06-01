@@ -9,6 +9,7 @@ import java.util.List;
 
 import com.santana.interscsimulator.entity.Hospital;
 import com.santana.interscsimulator.entity.MapPoint;
+import com.santana.interscsimulator.entity.MetroStation;
 import com.santana.interscsimulator.entity.Point;
 
 public class Connector {
@@ -92,6 +93,27 @@ public class Connector {
 
 	}
 
+	public static void insertMetroStation(MetroStation metroStation) {
+
+		try {
+
+
+				PreparedStatement ps = connection.prepareStatement("insert into metro_station(id, id_node, lat , lon, geom) values(" 
+						+ metroStation.getId() + "," 
+						+ metroStation.getIdNode() + ","
+						+ metroStation.getLat() + "," 
+						+ metroStation.getLon() 
+						+ ",ST_GEOMFROMTEXT(\'POINT(" + metroStation.getLat() + " " + metroStation.getLon() + ")\'))");
+				ps.execute();
+
+
+		} catch (SQLException e) {
+			System.out.println("Connection Failed! Check output console");
+			e.printStackTrace();
+		}
+
+	}
+	
 	public static long [] selectNearestPoint(double lat, double lon , int dist) {
 		
 		long [] result = new long[2];
