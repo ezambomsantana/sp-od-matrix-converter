@@ -11,6 +11,7 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import com.santana.interscsimulator.db.Connector;
+import com.santana.interscsimulator.entity.MetroStation;
 
 public class MetroStationReader {
 	
@@ -36,6 +37,7 @@ public class MetroStationReader {
 		String lastLine = "";
 		String lastStation = "";
 		long idLastStation = 0;
+		int cont = 1;
 		
 					
 		while (rowIterator.hasNext()) {
@@ -62,7 +64,15 @@ public class MetroStationReader {
 				stations.append(idsOrigin[0]);
 				stations.append("\" />\n");		
 				
-
+				MetroStation metro = new MetroStation();
+				metro.setId(cont);
+				metro.setLat(Double.parseDouble(lat));
+				metro.setLon(Double.parseDouble(lon));
+				metro.setIdNode(idsOrigin[0]);
+				metro.setName(stationName);
+				
+				Connector.insertMetroStation(metro);
+				
 				lastStation = stationName;
 				idLastStation = idsOrigin[0];
 				
@@ -95,13 +105,22 @@ public class MetroStationReader {
 				links.append(idsOrigin[0]);
 				links.append("\" idDestination=\"");
 				links.append(idLastStation);
-				links.append("\" />\n");		
+				links.append("\" />\n");
 
+				MetroStation metro = new MetroStation();
+				metro.setId(cont);
+				metro.setLat(Double.parseDouble(lat));
+				metro.setLon(Double.parseDouble(lon));
+				metro.setIdNode(idsOrigin[0]);
+				metro.setName(stationName);
+				
+				Connector.insertMetroStation(metro);
+				
 				lastStation = stationName;
 				idLastStation = idsOrigin[0];
 				
 			}
-			
+			cont++;
 			
 		}
 	    writer.println(stations.toString());
