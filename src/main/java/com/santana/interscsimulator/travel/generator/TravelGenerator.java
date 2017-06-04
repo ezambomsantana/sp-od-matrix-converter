@@ -35,7 +35,7 @@ public class TravelGenerator {
 
 			NodeList nList = docMap.getElementsByTagName("link");
 
-			for (int temp = 0; temp < 1100; temp++) {
+			for (int temp = 0; temp < 100; temp++) {
 
 				int nOrigin = (int) (Math.random() * nList.getLength());
 				int nDestination = (int) (Math.random() * nList.getLength());
@@ -50,11 +50,10 @@ public class TravelGenerator {
 				Element eElementTo = (Element) to;
 
 				String idLinkOrigin = eElement.getAttribute("id");
-				String idLinkDestionation = eElementTo.getAttribute("id");
 				String idFrom = eElement.getAttribute("from");
 				String idTo = eElementTo.getAttribute("to");
 				
-				if (temp < 500) {
+				if (temp < -1) {
 					sb.append("<trip origin=\"");
 					sb.append(idFrom);
 					sb.append("\" link_origin=\"");
@@ -68,7 +67,7 @@ public class TravelGenerator {
 					sb.append("\" type=\"work\"");
 					sb.append(" mode=\"car\"");
 					sb.append("/>\n");
-				} else if (temp < 900) {
+				} else if (temp < -1) {
 					sb.append("<trip origin=\"");
 					sb.append(idFrom);
 					sb.append("\" link_origin=\"");
@@ -82,7 +81,7 @@ public class TravelGenerator {
 					sb.append("\" type=\"home\"");
 					sb.append(" mode=\"car\"");
 					sb.append("/>\n");				
-				} else if (temp < 1010) {
+				} else if (temp < -1) {
 															
 					MapPoint ponto = Connector.getPointById(idFrom);
 					long idHospital = Connector.selectNearestHospital(ponto.getLat(), ponto.getLon(), 10000);
@@ -108,6 +107,11 @@ public class TravelGenerator {
 					long idMetroOrigin = Connector.selectNearestMetroStation(pontoOrigin.getLat(), pontoOrigin.getLon(), 10000);
 					long idMetroDestination = Connector.selectNearestMetroStation(pontoDestination.getLat(), pontoDestination.getLon(), 10000);
 					
+					MapPoint point = Connector.getPointById(String.valueOf(idMetroDestination));
+					if (point == null) {
+						continue;
+					}
+					
 					if (idMetroDestination == idMetroOrigin) {
 						continue;
 					}
@@ -123,7 +127,7 @@ public class TravelGenerator {
 					sb.append("    <leg origin=\"");
 					sb.append(idFrom);
 					sb.append("\" link_origin=\"");
-					sb.append(idTo);
+					sb.append(idLinkOrigin);
 					sb.append("\" destination=\"");
 					sb.append(idMetroOrigin);
 					sb.append(" mode=\"walk\"");
@@ -133,13 +137,13 @@ public class TravelGenerator {
 					sb.append(idMetroOrigin);
 					sb.append("\" destination=\"");
 					sb.append(idMetroDestination);
-					sb.append(" mode=\"metro\"");
+					sb.append("\" mode=\"metro\"");
 					sb.append("/>\n");			
 					
 					sb.append("    <leg origin=\"");
 					sb.append(idMetroDestination);
 					sb.append("\" link_origin=\"");
-					sb.append(idLinkDestionation);
+					sb.append(point.getIdLink());
 					sb.append("\" destination=\"");
 					sb.append(idTo);
 					sb.append(" mode=\"walk\"");
