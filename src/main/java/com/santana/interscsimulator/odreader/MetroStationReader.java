@@ -11,12 +11,13 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import com.santana.interscsimulator.db.Connector;
+import com.santana.interscsimulator.entity.MapPoint;
 import com.santana.interscsimulator.entity.MetroStation;
 
 public class MetroStationReader {
 	
 
-	private static final String fileName = "C:/dev/simulator/metro.xlsx";
+	private static final String fileName = "C:/dev/simulator/metro_verde.xlsx";
 
 	public static void main(String [] args) throws IOException {
 		
@@ -57,7 +58,7 @@ public class MetroStationReader {
 					idsOrigin = Connector.selectNearestPoint(Double.parseDouble(lat), Double.parseDouble(lon) , dist);
 					dist = dist * 5;
 				}
-				
+								
 				stations.append("    <station name=\"");
 				stations.append(stationName);
 				stations.append("\" idNode=\"");
