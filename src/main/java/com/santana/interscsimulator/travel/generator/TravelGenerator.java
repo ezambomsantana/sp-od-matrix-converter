@@ -35,7 +35,7 @@ public class TravelGenerator {
 
 			NodeList nList = docMap.getElementsByTagName("link");
 
-			for (int temp = 0; temp < 100; temp++) {
+			for (int temp = 0; temp < 20; temp++) {
 
 				int nOrigin = (int) (Math.random() * nList.getLength());
 				int nDestination = (int) (Math.random() * nList.getLength());
@@ -106,9 +106,14 @@ public class TravelGenerator {
 					MapPoint pontoDestination = Connector.getPointById(idTo);
 					long idMetroOrigin = Connector.selectNearestMetroStation(pontoOrigin.getLat(), pontoOrigin.getLon(), 10000);
 					long idMetroDestination = Connector.selectNearestMetroStation(pontoDestination.getLat(), pontoDestination.getLon(), 10000);
+
+					MapPoint pointOrigin = Connector.getPointById(String.valueOf(idMetroOrigin));
+					MapPoint pointDestination = Connector.getPointById(String.valueOf(idMetroDestination));
+					if (pointDestination == null) {
+						continue;
+					}
 					
-					MapPoint point = Connector.getPointById(String.valueOf(idMetroDestination));
-					if (point == null) {
+					if (pointOrigin == null) {
 						continue;
 					}
 					
@@ -124,29 +129,33 @@ public class TravelGenerator {
 					sb.append("\" type=\"hospital\"");
 					sb.append(">\n");
 					
-					sb.append("    <leg origin=\"");
+					sb.append("    <trip origin=\"");
 					sb.append(idFrom);
 					sb.append("\" link_origin=\"");
 					sb.append(idLinkOrigin);
 					sb.append("\" destination=\"");
 					sb.append(idMetroOrigin);
-					sb.append(" mode=\"walk\"");
+					sb.append("\" mode=\"walk\"");
 					sb.append("/>\n");				
 					
-					sb.append("    <leg origin=\"");
+					sb.append("    <trip origin=\"");
 					sb.append(idMetroOrigin);
+					sb.append("\" link_origin=\"");
+					sb.append(pointOrigin.getIdLink());
 					sb.append("\" destination=\"");
 					sb.append(idMetroDestination);
+					sb.append("\" link_destination=\"");
+					sb.append(pointDestination.getIdLink());
 					sb.append("\" mode=\"metro\"");
 					sb.append("/>\n");			
 					
-					sb.append("    <leg origin=\"");
+					sb.append("    <trip origin=\"");
 					sb.append(idMetroDestination);
 					sb.append("\" link_origin=\"");
-					sb.append(point.getIdLink());
+					sb.append(pointDestination.getIdLink());
 					sb.append("\" destination=\"");
 					sb.append(idTo);
-					sb.append(" mode=\"walk\"");
+					sb.append("\" mode=\"walk\"");
 					sb.append("/>\n");			
 					
 					sb.append("</multi_trip>\n");			
