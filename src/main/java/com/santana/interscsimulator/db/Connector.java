@@ -20,7 +20,7 @@ public class Connector {
 		try {
 			Class.forName("org.postgresql.Driver");
 
-			connection = DriverManager.getConnection("jdbc:postgresql://127.0.0.1:5432/eleicao", "postgres", "eduardo");
+			connection = DriverManager.getConnection("jdbc:postgresql://127.0.0.1:5432/eleicao", "postgres", "123456");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -165,11 +165,36 @@ public class Connector {
 
 	}
 	
+	public static long selectNearestMetroStation(double lat, double lon , int dist) {
+		
+		long result = 0;
+		try {
+
+			String sql = "SELECT id, id_node, ST_Distance(geom, poi)/1000 AS distance_km " + "FROM metro_station, "
+					+ "(select ST_MakePoint(" + lat + "," + lon
+					+ ")::geography as poi) as poi " + "WHERE ST_DWithin(geom, poi," + dist + " ) "
+					+ "ORDER BY ST_Distance(geom, poi) " + "LIMIT 1; ";
+
+			PreparedStatement ps = connection.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery();
+			while (rs.next()) {
+				result = rs.getLong(2);
+				return result;
+			}
+
+		} catch (SQLException e) {
+			System.out.println("Connection Failed! Check output console");
+			e.printStackTrace();
+		}
+		return 0;
+
+	}
+	
 	public static MapPoint getPointById(String pointId) {
 		MapPoint point = new MapPoint();
 		try {
 
-			String sql = "SELECT id, lat, lon from point where id =  " + pointId;
+			String sql = "SELECT id, lat, lon , id_link from point where id =  " + pointId;
 
 			PreparedStatement ps = connection.prepareStatement(sql);
 			ResultSet rs = ps.executeQuery();
@@ -177,6 +202,7 @@ public class Connector {
 				point.setId(rs.getLong(1));
 				point.setLat(rs.getFloat(2));
 				point.setLon(rs.getFloat(3));
+				point.setIdLink(rs.getLong(4));
 				return point;
 			}
 
