@@ -19,8 +19,8 @@ public class TravelGenerator {
 
 		try {
 
-			File mapFile = new File("c:/dev/map.xml");
-			File hospitalFile = new File("c:/dev/hospitals.xml");
+			File mapFile = new File("/home/eduardo/entrada/hospital/map.xml");
+			File hospitalFile = new File("/home/eduardo/entrada/hospital/hospitals.xml");
 			
 			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
@@ -166,7 +166,7 @@ public class TravelGenerator {
 			}
 			sb.append("</scsimulator_matrix>");
 
-			PrintWriter out = new PrintWriter("c:/dev/trips.xml");
+			PrintWriter out = new PrintWriter("/home/eduardo/entrada/trips.xml");
 			out.write(sb.toString());
 			out.close();
 

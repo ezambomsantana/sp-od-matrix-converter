@@ -20,7 +20,7 @@ public class Connector {
 		try {
 			Class.forName("org.postgresql.Driver");
 
-			connection = DriverManager.getConnection("jdbc:postgresql://127.0.0.1:5432/eleicao", "postgres", "123456");
+			connection = DriverManager.getConnection("jdbc:postgresql://127.0.0.1:5432/teste", "postgres", "123456");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
