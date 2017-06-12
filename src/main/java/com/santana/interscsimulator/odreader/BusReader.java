@@ -60,10 +60,10 @@ public class BusReader {
 	private static void writeBus(Bus bus, PrintWriter writer) {
 		
 		StringBuilder sb = new StringBuilder();
-		sb.append("<bus id=\"");
+		sb.append("    <bus id=\"");
 		sb.append(bus.getId());
-		sb.append("\" stops=\"");
-		
+		sb.append("\" interval=\"1800\"");
+		sb.append(" stops=\"");		
 		StringBuilder sb2 = new StringBuilder();
 		sb2.append(bus.getStops().get(0));
 		bus.getStops().remove(0);
