@@ -66,6 +66,7 @@ public class BusReader {
 		sb.append("    <bus id=\"");
 		sb.append(bus.getId());
 		sb.append("\" interval=\"1800\"");
+		sb.append(" start_time=\"300\"");
 		sb.append(" stops=\"");		
 		StringBuilder sb2 = new StringBuilder();
 		long idNode = Connector.getPointByBusStopt(bus.getStops().get(0));
