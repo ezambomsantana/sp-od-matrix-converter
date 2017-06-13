@@ -114,6 +114,46 @@ public class Connector {
 
 	}
 	
+	public static void insertBusStations(long idBusStop, long idNode) {
+
+		try {
+
+
+				PreparedStatement ps = connection.prepareStatement("insert into bus_stops(id_bus_stop, id_node) values(" 
+						+ idBusStop + "," 
+						+ idNode + ");");						
+						
+				ps.execute();
+
+
+		} catch (SQLException e) {
+			System.out.println("Connection Failed! Check output console");
+			e.printStackTrace();
+		}
+
+	}
+	
+	public static long getPointByBusStopt(long idBusStop) {
+
+		try {
+
+			String sql = "SELECT id_node FROM bus_stops where id_bus_stop = " + idBusStop;
+			
+			PreparedStatement ps = connection.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery();
+			while (rs.next()) {
+				return rs.getLong(1);
+			}
+
+		} catch (SQLException e) {
+			System.out.println("Connection Failed! Check output console");
+			e.printStackTrace();
+		}
+		return 0;
+		
+
+	}
+	
 	public static long [] selectNearestPoint(double lat, double lon , int dist) {
 		
 		long [] result = new long[2];

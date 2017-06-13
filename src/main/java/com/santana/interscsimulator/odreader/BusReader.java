@@ -6,13 +6,15 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
+
+import com.santana.interscsimulator.db.Connector;
 import com.santana.interscsimulator.entity.Bus;
 
 public class BusReader {
 	
 	public static void main(String[] args) throws FileNotFoundException, UnsupportedEncodingException {
 		
-		File file = new File("/home/eduardo/Simulador/dados/Pontos_Parada.txt");
+		File file = new File("/home/eduardo/maria_luiz.csv");
 		BufferedReader reader = null;
 
 		try {
@@ -45,6 +47,7 @@ public class BusReader {
 		    	}		    	
 		    	
 		    }
+		    writeBus(bus, writer);
 		    
 		    writer.println("</scsimulator_buses>");			
 		    writer.close();
@@ -65,10 +68,12 @@ public class BusReader {
 		sb.append("\" interval=\"1800\"");
 		sb.append(" stops=\"");		
 		StringBuilder sb2 = new StringBuilder();
-		sb2.append(bus.getStops().get(0));
+		long idNode = Connector.getPointByBusStopt(bus.getStops().get(0));
+		sb2.append(idNode);
 		bus.getStops().remove(0);
 		for (Long stop : bus.getStops()) {
-			sb2.append("," + stop);
+			idNode = Connector.getPointByBusStopt(stop);
+			sb2.append("," + idNode);
 		}
 		sb.append(sb2);
 		sb.append("\" />");
