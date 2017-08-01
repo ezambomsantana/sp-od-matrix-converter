@@ -14,7 +14,7 @@ public class BusReader {
 	
 	public static void main(String[] args) throws FileNotFoundException, UnsupportedEncodingException {
 		
-		File file = new File("/home/eduardo/maria_luiz.csv");
+		File file = new File("/home/eduardo/Pontos_Parada/buses.txt");
 		BufferedReader reader = null;
 
 		try {
