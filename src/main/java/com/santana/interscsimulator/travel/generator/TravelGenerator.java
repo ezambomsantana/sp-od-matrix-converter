@@ -19,23 +19,23 @@ public class TravelGenerator {
 
 		try {
 
-			File mapFile = new File("/home/eduardo/entrada/hospital/map.xml");
-			File hospitalFile = new File("/home/eduardo/entrada/hospital/hospitals.xml");
+			File mapFile = new File("/home/eduardo/map2.xml");
+			//File hospitalFile = new File("/home/eduardo/entrada/hospital/hospitals.xml");
 			
 			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
 			Document docMap = dBuilder.parse(mapFile);
-			Document docHospital = dBuilder.parse(hospitalFile);
+			//Document docHospital = dBuilder.parse(hospitalFile);
 
 			StringBuilder sb = new StringBuilder();
 			sb.append("<scsimulator_matrix>\n");
 
 			docMap.getDocumentElement().normalize();
-			docHospital.getDocumentElement().normalize();
+			//docHospital.getDocumentElement().normalize();
 
 			NodeList nList = docMap.getElementsByTagName("link");
 
-			for (int temp = 0; temp < 20; temp++) {
+			for (int temp = 0; temp < 100; temp++) {
 
 				int nOrigin = (int) (Math.random() * nList.getLength());
 				int nDestination = (int) (Math.random() * nList.getLength());
@@ -53,8 +53,10 @@ public class TravelGenerator {
 				String idFrom = eElement.getAttribute("from");
 				String idTo = eElementTo.getAttribute("to");
 				
-				if (temp < -1) {
-					sb.append("<trip origin=\"");
+				if (temp < 1000) {
+					sb.append("<trip name=\"");
+					sb.append(temp + 1);
+					sb.append("\" origin=\"");
 					sb.append(idFrom);
 					sb.append("\" link_origin=\"");
 					sb.append(idLinkOrigin);
@@ -166,7 +168,7 @@ public class TravelGenerator {
 			}
 			sb.append("</scsimulator_matrix>");
 
-			PrintWriter out = new PrintWriter("/home/eduardo/entrada/trips.xml");
+			PrintWriter out = new PrintWriter("/home/eduardo/trips.xml");
 			out.write(sb.toString());
 			out.close();
 
