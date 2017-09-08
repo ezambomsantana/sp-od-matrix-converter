@@ -25,20 +25,21 @@ import com.santana.interscsimulator.entity.Point;
  */
 public class ODReader {
 
-	private static final String fileName = "C:/dev/matriz.xlsx";
+	private static final String inputFileName = "/home/eduardo/entrada/paraisopolis/matriz.xlsx";
+	private static final String outputFileName = "/home/eduardo/entrada/paraisopolis/trips.xml";
 
 	public static void main(String[] args) throws IOException {
 
 		try {
 			
 			int count = 1;
-			FileInputStream arquivo = new FileInputStream(new File(ODReader.fileName));
+			FileInputStream arquivo = new FileInputStream(new File(ODReader.inputFileName));
 
 			System.out.println("lido!");
 			XSSFWorkbook workbook = new XSSFWorkbook(arquivo);
 
 			System.out.println("lido!");
-			XSSFSheet sheetAlunos = workbook.getSheetAt(1);
+			XSSFSheet sheetAlunos = workbook.getSheetAt(0);
 
 			System.out.println("lido!");
 			Iterator<Row> rowIterator = sheetAlunos.iterator();
@@ -48,7 +49,7 @@ public class ODReader {
 			rowIterator.next();
 			
 
-			PrintWriter writer = new PrintWriter("c:/dev/trips.xml", "UTF-8");
+			PrintWriter writer = new PrintWriter(ODReader.outputFileName, "UTF-8");
 
 		    writer.println("<scsimulator_matrix>");
 						
@@ -57,16 +58,30 @@ public class ODReader {
 				
 				if (row.getCell(0) != null && row.getCell(4) != null) {
 					Point point = new Point();
+
+					double multiplicador = row.getCell(0).getNumericCellValue();					
+					double latOrigin = row.getCell(2).getNumericCellValue();
+					double lonOrigin = row.getCell(3).getNumericCellValue();
+					double latDestination = row.getCell(5).getNumericCellValue();
+					double lonDestination = row.getCell(6).getNumericCellValue();
+					double modeNumero = row.getCell(14).getNumericCellValue();
 					
-					double latOrigin = row.getCell(0).getNumericCellValue();
-					double lonOrigin = row.getCell(1).getNumericCellValue();
-					double latDestination = row.getCell(2).getNumericCellValue();
-					double lonDestination = row.getCell(3).getNumericCellValue();
 					
-					int hourStart = (int)row.getCell(4).getNumericCellValue();
+					String mode = "";
+					if (modeNumero == 9 || modeNumero == 1) {
+						mode = "car"; // bus
+					} else if (modeNumero == 16) {
+						mode = "walk";
+					} else if (modeNumero == 12) {
+						mode = "car"; //subway
+					} else {
+						mode = "car";
+					} 
+					
+					int hourStart = (int)row.getCell(9).getNumericCellValue();
 					point.setHourStart(hourStart);
 					
-					int minuteStart = (int)row.getCell(5).getNumericCellValue();
+					int minuteStart = (int)row.getCell(10).getNumericCellValue();
 					point.setMinuteStart(minuteStart);
 					
 					double[] coordsOrigin = UTM2Deg(23, latOrigin, lonOrigin);
@@ -95,16 +110,20 @@ public class ODReader {
 
 					StringBuilder sb = new StringBuilder();
 					
-					sb.append("   <trip origin=\"");
+					sb.append("   <trip name=\"");
+					sb.append(i);
+					sb.append("\" origin=\"");
 					sb.append(idsOrigin[0]);
 					sb.append("\" destination=\"");
 					sb.append(idDestination[0]);
 					sb.append("\" link_origin=\"");
 					sb.append(idsOrigin[1]);
 					sb.append("\" count=\"");
-					sb.append(count);
+					sb.append(multiplicador);
 					sb.append("\" start=\"");
 					sb.append(point.getTimeStart());
+					sb.append("\" mode=\"");
+					sb.append(mode);
 					sb.append("\" />");
 				    writer.println(sb.toString());
 					
