@@ -133,6 +133,25 @@ public class Connector {
 
 	}
 	
+	public static void insertBusStopsList(String idBus, long idBusStop) {
+
+		try {
+
+
+				PreparedStatement ps = connection.prepareStatement("insert into bus_stop_list(bus_line, bus_stop) values('" 
+						+ idBus + "'," 
+						+ idBusStop + ");");						
+						
+				ps.execute();
+
+
+		} catch (SQLException e) {
+			System.out.println("Connection Failed! Check output console");
+			e.printStackTrace();
+		}
+
+	}
+	
 	public static long getPointByBusStopt(long idBusStop) {
 
 		try {
