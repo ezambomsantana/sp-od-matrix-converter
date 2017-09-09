@@ -14,6 +14,7 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import com.santana.interscsimulator.db.Connector;
+import com.santana.interscsimulator.entity.MapPoint;
 import com.santana.interscsimulator.entity.Point;
 
 /**
@@ -73,59 +74,144 @@ public class ODReader {
 					} else if (modeNumero == 16) {
 						mode = "walk";
 					} else if (modeNumero == 12) {
-						mode = "car"; //subway
+						mode = "subway"; //subway
 					} else {
 						mode = "car";
 					} 
 					
-					int hourStart = (int)row.getCell(9).getNumericCellValue();
-					point.setHourStart(hourStart);
+					if (mode.equals("car") || mode.equals("walk")) {
 					
-					int minuteStart = (int)row.getCell(10).getNumericCellValue();
-					point.setMinuteStart(minuteStart);
-					
-					double[] coordsOrigin = UTM2Deg(23, latOrigin, lonOrigin);
-					double[] coordsDestination = UTM2Deg(23, latDestination, lonDestination);
-					
-					point.setLatOrigin(coordsOrigin[0]);
-					point.setLonOrigin(coordsOrigin[1]);
-					
-					point.setLatDestination(coordsDestination[0]);
-					point.setLonDestination(coordsDestination[1]);	
-					
-					long [] idsOrigin = null;
-					int dist = 1000;
-					while (idsOrigin == null) {
-						idsOrigin = Connector.selectNearestPoint(point.getLatOrigin() , point.getLonOrigin() , dist);
-						dist = dist * 5;
-					}
-					
-					long [] idDestination = null;
-					dist = 1000;
-					while (idDestination == null) {
-						idDestination = Connector.selectNearestPoint(point.getLatDestination() , point.getLonDestination(), dist);
-						dist = dist * 5;
-					}
-					
+						int hourStart = (int)row.getCell(9).getNumericCellValue();
+						point.setHourStart(hourStart);
+						
+						int minuteStart = (int)row.getCell(10).getNumericCellValue();
+						point.setMinuteStart(minuteStart);
+						
+						double[] coordsOrigin = UTM2Deg(23, latOrigin, lonOrigin);
+						double[] coordsDestination = UTM2Deg(23, latDestination, lonDestination);
+						
+						point.setLatOrigin(coordsOrigin[0]);
+						point.setLonOrigin(coordsOrigin[1]);
+						
+						point.setLatDestination(coordsDestination[0]);
+						point.setLonDestination(coordsDestination[1]);	
+						
+						long [] idsOrigin = null;
+						int dist = 1000;
+						while (idsOrigin == null) {
+							idsOrigin = Connector.selectNearestPoint(point.getLatOrigin() , point.getLonOrigin() , dist);
+							dist = dist * 5;
+						}
+						
+						long [] idDestination = null;
+						dist = 1000;
+						while (idDestination == null) {
+							idDestination = Connector.selectNearestPoint(point.getLatDestination() , point.getLonDestination(), dist);
+							dist = dist * 5;
+						}
+						
+	
+						StringBuilder sb = new StringBuilder();
+						
+						sb.append("   <trip name=\"");
+						sb.append(i);
+						sb.append("\" origin=\"");
+						sb.append(idsOrigin[0]);
+						sb.append("\" destination=\"");
+						sb.append(idDestination[0]);
+						sb.append("\" link_origin=\"");
+						sb.append(idsOrigin[1]);
+						sb.append("\" count=\"");
+						sb.append(multiplicador);
+						sb.append("\" start=\"");
+						sb.append(point.getTimeStart());
+						sb.append("\" mode=\"");
+						sb.append(mode);
+						sb.append("\" />");
+					    writer.println(sb.toString());
+					    
+					} else if (mode.equals("subway")) {
+						
+						int hourStart = (int)row.getCell(9).getNumericCellValue();
+						point.setHourStart(hourStart);
+						
+						int minuteStart = (int)row.getCell(10).getNumericCellValue();
+						point.setMinuteStart(minuteStart);
+						
+						double[] coordsOrigin = UTM2Deg(23, latOrigin, lonOrigin);
+						double[] coordsDestination = UTM2Deg(23, latDestination, lonDestination);
+						
+						point.setLatOrigin(coordsOrigin[0]);
+						point.setLonOrigin(coordsOrigin[1]);
+						
+						point.setLatDestination(coordsDestination[0]);
+						point.setLonDestination(coordsDestination[1]);	
+						
+						long [] idsOrigin = null;
+						int dist = 1000;
+						while (idsOrigin == null) {
+							idsOrigin = Connector.selectNearestPoint(point.getLatOrigin() , point.getLonOrigin() , dist);
+							dist = dist * 5;
+						}
+						
+						long [] idDestination = null;
+						dist = 1000;
+						while (idDestination == null) {
+							idDestination = Connector.selectNearestPoint(point.getLatDestination() , point.getLonDestination(), dist);
+							dist = dist * 5;
+						}						
+																	
+						long idMetroOrigin = Connector.selectNearestMetroStation(point.getLatOrigin() , point.getLonOrigin(), 100000);
+						long idMetroDestination = Connector.selectNearestMetroStation(point.getLatDestination(), point.getLonDestination(), 100000);
 
-					StringBuilder sb = new StringBuilder();
-					
-					sb.append("   <trip name=\"");
-					sb.append(i);
-					sb.append("\" origin=\"");
-					sb.append(idsOrigin[0]);
-					sb.append("\" destination=\"");
-					sb.append(idDestination[0]);
-					sb.append("\" link_origin=\"");
-					sb.append(idsOrigin[1]);
-					sb.append("\" count=\"");
-					sb.append(multiplicador);
-					sb.append("\" start=\"");
-					sb.append(point.getTimeStart());
-					sb.append("\" mode=\"");
-					sb.append(mode);
-					sb.append("\" />");
-				    writer.println(sb.toString());
+						MapPoint pointOrigin = Connector.getPointById(String.valueOf(idMetroOrigin));
+						MapPoint pointDestination = Connector.getPointById(String.valueOf(idMetroDestination));					
+
+						StringBuilder sb = new StringBuilder();
+							
+						sb.append("<multi_trip ");
+						sb.append(" count=\"");
+						sb.append(multiplicador);
+						sb.append("\" start=\"");
+						sb.append(point.getTimeStart());
+						sb.append("\" type=\"hospital\"");
+						sb.append(">\n");
+						
+						sb.append("    <trip origin=\"");
+						sb.append(idsOrigin[0]);
+						sb.append("\" link_origin=\"");
+						sb.append(idsOrigin[1]);
+						sb.append("\" destination=\"");
+						sb.append(idMetroOrigin);
+						sb.append("\" mode=\"walk\"");
+						sb.append("/>\n");				
+						
+						sb.append("    <trip origin=\"");
+						sb.append(idMetroOrigin);
+						sb.append("\" link_origin=\"");
+						sb.append(pointOrigin.getIdLink());
+						sb.append("\" destination=\"");
+						sb.append(idMetroDestination);
+						sb.append("\" link_destination=\"");
+						sb.append(pointDestination.getIdLink());
+						sb.append("\" mode=\"metro\"");
+						sb.append("/>\n");			
+						
+						sb.append("    <trip origin=\"");
+						sb.append(idMetroDestination);
+						sb.append("\" link_origin=\"");
+						sb.append(pointDestination.getIdLink());
+						sb.append("\" destination=\"");
+						sb.append(idDestination[0]);
+						sb.append("\" mode=\"walk\"");
+						sb.append("/>\n");			
+						
+						sb.append("</multi_trip>");			
+					    writer.println(sb.toString());
+						
+						
+						
+					}
 					
 					i++;				
 
