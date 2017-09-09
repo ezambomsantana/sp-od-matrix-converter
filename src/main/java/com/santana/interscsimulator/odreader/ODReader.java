@@ -169,7 +169,7 @@ public class ODReader {
 
 						StringBuilder sb = new StringBuilder();
 							
-						sb.append("<multi_trip ");
+						sb.append("   <multi_trip ");
 						sb.append(" count=\"");
 						sb.append(multiplicador);
 						sb.append("\" start=\"");
@@ -177,7 +177,7 @@ public class ODReader {
 						sb.append("\" type=\"hospital\"");
 						sb.append(">\n");
 						
-						sb.append("    <trip origin=\"");
+						sb.append("      <trip origin=\"");
 						sb.append(idsOrigin[0]);
 						sb.append("\" link_origin=\"");
 						sb.append(idsOrigin[1]);
@@ -186,7 +186,7 @@ public class ODReader {
 						sb.append("\" mode=\"walk\"");
 						sb.append("/>\n");				
 						
-						sb.append("    <trip origin=\"");
+						sb.append("      <trip origin=\"");
 						sb.append(idMetroOrigin);
 						sb.append("\" link_origin=\"");
 						sb.append(pointOrigin.getIdLink());
@@ -197,7 +197,7 @@ public class ODReader {
 						sb.append("\" mode=\"metro\"");
 						sb.append("/>\n");			
 						
-						sb.append("    <trip origin=\"");
+						sb.append("      <trip origin=\"");
 						sb.append(idMetroDestination);
 						sb.append("\" link_origin=\"");
 						sb.append(pointDestination.getIdLink());
@@ -206,7 +206,7 @@ public class ODReader {
 						sb.append("\" mode=\"walk\"");
 						sb.append("/>\n");			
 						
-						sb.append("</multi_trip>");			
+						sb.append("   </multi_trip>");			
 					    writer.println(sb.toString());
 						
 						
