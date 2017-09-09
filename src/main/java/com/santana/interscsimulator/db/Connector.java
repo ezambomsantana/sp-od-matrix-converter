@@ -249,6 +249,31 @@ public class Connector {
 
 	}
 	
+	public static long selectNearestBusStop(double lat, double lon , int dist) {
+		 
+		long result = 0;
+		try {
+
+			String sql = "SELECT id_node, ST_Distance(geom, poi)/1000 AS distance_km " + "from bus_stops bs join point p on bs.id_node = p.id , "
+					+ "(select ST_MakePoint(" + lat + "," + lon
+					+ ")::geography as poi) as poi " + "WHERE ST_DWithin(geom, poi," + dist + " ) "
+					+ "ORDER BY ST_Distance(geom, poi) " + "LIMIT 1; ";
+
+			PreparedStatement ps = connection.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery();
+			while (rs.next()) {
+				result = rs.getLong(1);
+				return result;
+			}
+
+		} catch (SQLException e) {
+			System.out.println("Connection Failed! Check output console");
+			e.printStackTrace();
+		}
+		return 0;
+
+	}
+	
 	public static MapPoint getPointById(String pointId) {
 		MapPoint point = new MapPoint();
 		try {
