@@ -1,4 +1,4 @@
-package teste;
+package com.santana.interscsimulator.odreader;
 
 import edu.uci.ics.jung.algorithms.shortestpath.DijkstraShortestPath;
 import edu.uci.ics.jung.graph.DirectedSparseMultigraph;

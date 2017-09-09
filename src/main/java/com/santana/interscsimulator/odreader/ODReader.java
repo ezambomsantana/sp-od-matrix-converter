@@ -31,6 +31,8 @@ public class ODReader {
 
 	public static void main(String[] args) throws IOException {
 
+		double[] coordsOrigin2 = UTM2Deg(23, 330833,	7395618);
+
 		try {
 			
 			int count = 1;
@@ -271,7 +273,7 @@ public class ODReader {
 						sb.append(pointOrigin.getIdLink());
 						sb.append("\" destination=\"");
 						sb.append(idBusStationDestinatio);
-						sb.append("\" link_destination=\"");
+						sb.append("\" line=\"");
 						sb.append(pointDestination.getIdLink());
 						sb.append("\" mode=\"bus\"");
 						sb.append("/>\n");			
