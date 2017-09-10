@@ -101,7 +101,11 @@ public class BusTravelGenerator {
     public static List<String> getShortestPath(String origin, String destionation) {
         
         DijkstraShortestPath<String,String> alg = new DijkstraShortestPath(g);
-        List<String> l = alg.getPath("830004113", "410003573");
+        List<String> l = alg.getPath(origin, destionation);
+        
+        if (l == null || l.size() == 0) {
+        	return null;
+        }
               
         String caminho = "";
                 

@@ -30,6 +30,9 @@ public class ODReader {
 
 	public static void main(String[] args) throws IOException {
 
+		double[] coordsDestination2 = UTM2Deg(23, 324541.18,	7387408.67);
+		System.out.println(coordsDestination2);
+		
 		try {
 			
 			BusTravelGenerator.init();
@@ -219,6 +222,7 @@ public class ODReader {
 						
 						double[] coordsOrigin = UTM2Deg(23, latOrigin, lonOrigin);
 						double[] coordsDestination = UTM2Deg(23, latDestination, lonDestination);
+
 						
 						point.setLatOrigin(coordsOrigin[0]);
 						point.setLonOrigin(coordsOrigin[1]);
@@ -244,6 +248,12 @@ public class ODReader {
 						long[] idBusStationDestination = Connector.selectNearestBusStop(point.getLatDestination(), point.getLonDestination(), 1000000);
 
 						List<String> buses = BusTravelGenerator.getShortestPath(String.valueOf(idBusStationOrigin[1]), String.valueOf(idBusStationDestination[1]));
+						
+						String bus = "nd";
+						if (buses != null) {
+							 bus = buses.get(0);
+						}
+						
 						
 						MapPoint pointOrigin = Connector.getPointById(String.valueOf(idBusStationOrigin[0]));
 						MapPoint pointDestination = Connector.getPointById(String.valueOf(idBusStationDestination[0]));					
@@ -274,7 +284,7 @@ public class ODReader {
 						sb.append("\" destination=\"");
 						sb.append(idBusStationDestination[0]);
 						sb.append("\" line=\"");
-						sb.append(buses.get(0));
+						sb.append(bus);
 						sb.append("\" mode=\"bus\"");
 						sb.append("/>\n");			
 						
