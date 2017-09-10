@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -244,15 +245,33 @@ public class ODReader {
 							dist = dist * 5;
 						}						
 																	
-						long[] idBusStationOrigin = Connector.selectNearestBusStop(point.getLatOrigin() , point.getLonOrigin(), 1000000);
-						long[] idBusStationDestination = Connector.selectNearestBusStop(point.getLatDestination(), point.getLonDestination(), 1000000);
-
-						List<String> buses = BusTravelGenerator.getShortestPath(String.valueOf(idBusStationOrigin[1]), String.valueOf(idBusStationDestination[1]));
+						List<long[]> idBusStationOriginList = Connector.selectNearestBusStop(point.getLatOrigin() , point.getLonOrigin(), 10000);
+						List<long[]> idBusStationDestinationList = Connector.selectNearestBusStop(point.getLatDestination(), point.getLonDestination(), 10000);
 						
-						String bus = "nd";
-						if (buses != null) {
-							 bus = buses.get(0);
+						long [] idBusStationOrigin = null; 
+						long [] idBusStationDestination = null;
+						
+						List<String> selectedBuses = null;
+						for (int h = 0; h < idBusStationOriginList.size(); h++) {
+							for (int z = 0; z < idBusStationDestinationList.size(); z++) {
+								long [] ro = idBusStationOriginList.get(h);
+								long [] rd = idBusStationDestinationList.get(z);
+								
+								List<String> buses = BusTravelGenerator.getShortestPath(String.valueOf(ro[1]), String.valueOf(rd[1]));
+								if (buses != null) {
+									if (selectedBuses == null || selectedBuses.size() > buses.size()) {
+										selectedBuses = buses;
+										idBusStationOrigin = ro;
+										idBusStationDestination = rd;
+									}
+								}
+								
+							}
 						}
+						
+						
+						
+						
 						
 						
 						MapPoint pointOrigin = Connector.getPointById(String.valueOf(idBusStationOrigin[0]));
@@ -267,7 +286,7 @@ public class ODReader {
 						sb.append(point.getTimeStart());
 						sb.append("\" type=\"hospital\"");
 						sb.append(">\n");
-						
+												
 						sb.append("      <trip origin=\"");
 						sb.append(idsOrigin[0]);
 						sb.append("\" link_origin=\"");
@@ -277,16 +296,37 @@ public class ODReader {
 						sb.append("\" mode=\"walk\"");
 						sb.append("/>\n");				
 						
-						sb.append("      <trip origin=\"");
-						sb.append(idBusStationOrigin[0]);
-						sb.append("\" link_origin=\"");
-						sb.append(pointOrigin.getIdLink());
-						sb.append("\" destination=\"");
-						sb.append(idBusStationDestination[0]);
-						sb.append("\" line=\"");
-						sb.append(bus);
-						sb.append("\" mode=\"bus\"");
-						sb.append("/>\n");			
+
+						
+						if (selectedBuses != null) {
+							
+							for (String bus : selectedBuses) {
+						
+								sb.append("      <trip origin=\"");
+								sb.append(idBusStationOrigin[0]);
+								sb.append("\" link_origin=\"");
+								sb.append(pointOrigin.getIdLink());
+								sb.append("\" destination=\"");
+								sb.append(idBusStationDestination[0]);
+								sb.append("\" line=\"");
+								sb.append(bus);
+								sb.append("\" mode=\"bus\"");
+								sb.append("/>\n");	
+								
+							}
+						
+						} else {
+							sb.append("      <trip origin=\"");
+							sb.append(idBusStationOrigin[0]);
+							sb.append("\" link_origin=\"");
+							sb.append(pointOrigin.getIdLink());
+							sb.append("\" destination=\"");
+							sb.append(idBusStationDestination[0]);
+							sb.append("\" line=\"");
+							sb.append("nd");
+							sb.append("\" mode=\"bus\"");
+							sb.append("/>\n");	
+						}
 						
 						sb.append("      <trip origin=\"");
 						sb.append(idBusStationDestination[0]);

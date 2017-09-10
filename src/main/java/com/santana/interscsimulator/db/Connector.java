@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.santana.interscsimulator.entity.Hospital;
@@ -249,23 +250,27 @@ public class Connector {
 
 	}
 	
-	public static long[] selectNearestBusStop(double lat, double lon , int dist) {
+	public static List<long[]> selectNearestBusStop(double lat, double lon , int dist) {
 		 
-		long[] result = new long[2];
+		List<long[]> result = new ArrayList<long[]>();
 		try {
 
 			String sql = "SELECT id_node, id_bus_stop, ST_Distance(geom, poi)/1000 AS distance_km " + "from bus_stops bs join point p on bs.id_node = p.id , "
 					+ "(select ST_MakePoint(" + lat + "," + lon
 					+ ")::geography as poi) as poi " + "WHERE ST_DWithin(geom, poi," + dist + " ) "
-					+ "ORDER BY ST_Distance(geom, poi) " + "LIMIT 1; ";
+					+ "ORDER BY ST_Distance(geom, poi) " + "LIMIT 10; ";
 
 			PreparedStatement ps = connection.prepareStatement(sql);
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
-				result[0] = rs.getLong(1);
-				result[1] = rs.getLong(2);
-				return result;
+				
+				long r [] = new long[2];
+				r[0] = rs.getLong(1);
+				r[1] = rs.getLong(2);
+				result.add(r);
+				
 			}
+			return result;
 
 		} catch (SQLException e) {
 			System.out.println("Connection Failed! Check output console");
