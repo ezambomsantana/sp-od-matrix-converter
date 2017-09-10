@@ -14,6 +14,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.santana.interscsimulator.entity.Link;
+
 public class BusTravelGenerator {
 
 	public static void main(String[] args) throws FileNotFoundException, UnsupportedEncodingException {
