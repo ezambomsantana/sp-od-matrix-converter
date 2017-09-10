@@ -249,6 +249,7 @@ public class ODReader {
 						long [] idBusStationDestination = null;
 						
 						List<String> selectedBuses = null;
+						List<String> selectedPath = null;
 						for (int h = 0; h < idBusStationOriginList.size(); h++) {
 							for (int z = 0; z < idBusStationDestinationList.size(); z++) {
 								long [] ro = idBusStationOriginList.get(h);
@@ -258,6 +259,7 @@ public class ODReader {
 								if (buses != null) {
 									if (selectedBuses == null || selectedBuses.size() > buses.size()) {
 										selectedBuses = buses;
+										selectedPath = BusTravelGenerator.path;
 										idBusStationOrigin = ro;
 										idBusStationDestination = rd;
 									}
@@ -291,18 +293,31 @@ public class ODReader {
 						
 						if (selectedBuses != null) {
 							
-							for (String bus : selectedBuses) {
+							long inicio = idBusStationOrigin[0];
+							long linkInicio = Connector.getPointById(String.valueOf(idBusStationOrigin[0])).getIdLink();
+							
+							for (int o = 0; o < selectedBuses.size(); o++) {
 						
+								String bus = selectedBuses.get(o);
+								String path[] = selectedPath.get(o).split(":");
+								
+								long [] idNodeLink = Connector.getPointAndLinkByBusStopt(Long.valueOf(path[1]));
+								
 								sb.append("      <trip origin=\"");
-								sb.append(idBusStationOrigin[0]);
+								sb.append(inicio);
 								sb.append("\" link_origin=\"");
-								sb.append(pointOrigin.getIdLink());
+								sb.append(linkInicio);
 								sb.append("\" destination=\"");
-								sb.append(idBusStationDestination[0]);
+								sb.append(idNodeLink[0]);
+								sb.append("\" link_destination=\"");
+								sb.append(idNodeLink[1]);
 								sb.append("\" line=\"");
 								sb.append(bus);
 								sb.append("\" mode=\"bus\"");
 								sb.append("/>\n");	
+								
+								inicio = idNodeLink[0];
+								linkInicio = idNodeLink[1];
 								
 							}
 						

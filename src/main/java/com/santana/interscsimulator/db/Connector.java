@@ -174,6 +174,36 @@ public class Connector {
 
 	}
 	
+	public static long[] getPointAndLinkByBusStopt(long idBusStop) {
+
+		try {
+
+			String sql = "select id_node, id_link from bus_stops bs	join point p on bs.id_node = p.id where id_bus_stop = " + idBusStop;
+			
+			PreparedStatement ps = connection.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery();
+			while (rs.next()) {
+				
+				long[] ret = new long[2];
+				ret[0] = rs.getLong(1);
+				ret[1] = rs.getLong(2);
+				
+				return ret;
+			}
+
+		} catch (SQLException e) {
+			System.out.println("Connection Failed! Check output console");
+			e.printStackTrace();
+		}
+		return null;
+		
+
+	}
+	
+	
+	
+	
+	
 	public static long [] selectNearestPoint(double lat, double lon , int dist) {
 		
 		long [] result = new long[2];
