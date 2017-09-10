@@ -5,7 +5,6 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -31,11 +30,10 @@ public class ODReader {
 
 	public static void main(String[] args) throws IOException {
 
-		double[] coordsOrigin2 = UTM2Deg(23, 330833,	7395618);
-
 		try {
 			
-			int count = 1;
+			BusTravelGenerator.init();
+			
 			FileInputStream arquivo = new FileInputStream(new File(ODReader.inputFileName));
 
 			System.out.println("lido!");
@@ -242,11 +240,13 @@ public class ODReader {
 							dist = dist * 5;
 						}						
 																	
-						long idBusStationOrigin = Connector.selectNearestBusStop(point.getLatOrigin() , point.getLonOrigin(), 1000000);
-						long idBusStationDestinatio = Connector.selectNearestBusStop(point.getLatDestination(), point.getLonDestination(), 1000000);
+						long[] idBusStationOrigin = Connector.selectNearestBusStop(point.getLatOrigin() , point.getLonOrigin(), 1000000);
+						long[] idBusStationDestination = Connector.selectNearestBusStop(point.getLatDestination(), point.getLonDestination(), 1000000);
 
-						MapPoint pointOrigin = Connector.getPointById(String.valueOf(idBusStationOrigin));
-						MapPoint pointDestination = Connector.getPointById(String.valueOf(idBusStationDestinatio));					
+						List<String> buses = BusTravelGenerator.getShortestPath(String.valueOf(idBusStationOrigin[1]), String.valueOf(idBusStationDestination[1]));
+						
+						MapPoint pointOrigin = Connector.getPointById(String.valueOf(idBusStationOrigin[0]));
+						MapPoint pointDestination = Connector.getPointById(String.valueOf(idBusStationDestination[0]));					
 
 						StringBuilder sb = new StringBuilder();
 							
@@ -263,23 +263,23 @@ public class ODReader {
 						sb.append("\" link_origin=\"");
 						sb.append(idsOrigin[1]);
 						sb.append("\" destination=\"");
-						sb.append(idBusStationOrigin);
+						sb.append(idBusStationOrigin[0]);
 						sb.append("\" mode=\"walk\"");
 						sb.append("/>\n");				
 						
 						sb.append("      <trip origin=\"");
-						sb.append(idBusStationOrigin);
+						sb.append(idBusStationOrigin[0]);
 						sb.append("\" link_origin=\"");
 						sb.append(pointOrigin.getIdLink());
 						sb.append("\" destination=\"");
-						sb.append(idBusStationDestinatio);
+						sb.append(idBusStationDestination[0]);
 						sb.append("\" line=\"");
-						sb.append(pointDestination.getIdLink());
+						sb.append(buses.get(0));
 						sb.append("\" mode=\"bus\"");
 						sb.append("/>\n");			
 						
 						sb.append("      <trip origin=\"");
-						sb.append(idBusStationDestinatio);
+						sb.append(idBusStationDestination[0]);
 						sb.append("\" link_origin=\"");
 						sb.append(pointDestination.getIdLink());
 						sb.append("\" destination=\"");

@@ -249,12 +249,12 @@ public class Connector {
 
 	}
 	
-	public static long selectNearestBusStop(double lat, double lon , int dist) {
+	public static long[] selectNearestBusStop(double lat, double lon , int dist) {
 		 
-		long result = 0;
+		long[] result = new long[2];
 		try {
 
-			String sql = "SELECT id_node, ST_Distance(geom, poi)/1000 AS distance_km " + "from bus_stops bs join point p on bs.id_node = p.id , "
+			String sql = "SELECT id_node, id_bus_stop, ST_Distance(geom, poi)/1000 AS distance_km " + "from bus_stops bs join point p on bs.id_node = p.id , "
 					+ "(select ST_MakePoint(" + lat + "," + lon
 					+ ")::geography as poi) as poi " + "WHERE ST_DWithin(geom, poi," + dist + " ) "
 					+ "ORDER BY ST_Distance(geom, poi) " + "LIMIT 1; ";
@@ -262,7 +262,8 @@ public class Connector {
 			PreparedStatement ps = connection.prepareStatement(sql);
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
-				result = rs.getLong(1);
+				result[0] = rs.getLong(1);
+				result[1] = rs.getLong(2);
 				return result;
 			}
 
@@ -270,7 +271,7 @@ public class Connector {
 			System.out.println("Connection Failed! Check output console");
 			e.printStackTrace();
 		}
-		return 0;
+		return null;
 
 	}
 	
