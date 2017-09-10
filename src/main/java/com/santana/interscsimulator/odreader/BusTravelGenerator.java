@@ -17,10 +17,13 @@ import java.util.Map;
 import com.santana.interscsimulator.entity.Link;
 
 public class BusTravelGenerator {
+	
+	private static final String fileName = "/home/eduardo/Pontos_Parada/buses.txt";
+	private static Graph g = null;
 
-	public static void main(String[] args) throws FileNotFoundException, UnsupportedEncodingException {
+	public static void init() throws FileNotFoundException, UnsupportedEncodingException {
 		
-		File file = new File("C:/Users/ezamb/Desktop/Pontos_Parada/Pontos_Parada.txt");
+		File file = new File(fileName);
 		BufferedReader reader = null;
 		
 		Map<String, String> node = new HashMap<String, String>();
@@ -80,7 +83,7 @@ public class BusTravelGenerator {
 
     private static void createGraph(Map<String, String> nodes, Map<String, Link> link) {
         
-        Graph g = new DirectedSparseMultigraph<String, String>();
+        g = new DirectedSparseMultigraph<String, String>();
         for  (String node : nodes.values()) {
             g.addVertex(node);
         }
@@ -91,19 +94,18 @@ public class BusTravelGenerator {
                 buses = buses + b + " ";
             }
             g.addEdge(buses + " ", l.getOrigin(), l.getDestination());
-	}
+        }
+        
+    }
+    
+    public static List<String> getShortestPath(String origin, String destionation) {
         
         DijkstraShortestPath<String,String> alg = new DijkstraShortestPath(g);
         List<String> l = alg.getPath("830004113", "410003573");
               
-        for (String l2 : l) {
-            System.out.println(l2);
-        }
-        
-        String caminho = "";;
+        String caminho = "";
                 
         List<String> candidatosAnteriores = Arrays.asList(l.get(0).split(" "));
-        System.out.println("The shortest unweighted path from" + "301703" + " to " + "30003002" + " is:");
          
         for (int i = 0; i < l.size(); i++) {
                         
@@ -131,7 +133,9 @@ public class BusTravelGenerator {
                
         }
         
-        System.out.println(caminho);        
+        List<String> buses = Arrays.asList(caminho.split(" "));
+        
+        return buses;        
     
     }
 		
