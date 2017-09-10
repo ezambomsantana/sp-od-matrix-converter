@@ -30,9 +30,6 @@ public class ODReader {
 	private static final String outputFileName = "/home/eduardo/entrada/paraisopolis/trips.xml";
 
 	public static void main(String[] args) throws IOException {
-
-		double[] coordsDestination2 = UTM2Deg(23, 324541.18,	7387408.67);
-		System.out.println(coordsDestination2);
 		
 		try {
 			
@@ -256,23 +253,17 @@ public class ODReader {
 							for (int z = 0; z < idBusStationDestinationList.size(); z++) {
 								long [] ro = idBusStationOriginList.get(h);
 								long [] rd = idBusStationDestinationList.get(z);
-								
-								List<String> buses = BusTravelGenerator.getShortestPath(String.valueOf(ro[1]), String.valueOf(rd[1]));
+								BusTravelGenerator.getShortestPath(String.valueOf(ro[1]), String.valueOf(rd[1]));
+								List<String> buses = BusTravelGenerator.buses;
 								if (buses != null) {
 									if (selectedBuses == null || selectedBuses.size() > buses.size()) {
 										selectedBuses = buses;
 										idBusStationOrigin = ro;
 										idBusStationDestination = rd;
 									}
-								}
-								
+								}								
 							}
 						}
-						
-						
-						
-						
-						
 						
 						MapPoint pointOrigin = Connector.getPointById(String.valueOf(idBusStationOrigin[0]));
 						MapPoint pointDestination = Connector.getPointById(String.valueOf(idBusStationDestination[0]));					

@@ -20,6 +20,9 @@ public class BusTravelGenerator {
 	
 	private static final String fileName = "/home/eduardo/Pontos_Parada/buses.txt";
 	private static Graph g = null;
+	
+	public static List<String> buses;
+	public static List<String> path;
 
 	public static void init() throws FileNotFoundException, UnsupportedEncodingException {
 		
@@ -89,7 +92,7 @@ public class BusTravelGenerator {
         }
         
         for (Link l : link.values()) {
-            String buses = l.getOrigin() + ":" + l.getDestination() + ": ";
+            String buses = l.getOrigin() + ":" + l.getDestination() + " ";
             for (String b : l.getBuses()) {
                 buses = buses + b + " ";
             }
@@ -98,16 +101,18 @@ public class BusTravelGenerator {
         
     }
     
-    public static List<String> getShortestPath(String origin, String destionation) {
+    public static void getShortestPath(String origin, String destionation) {
         
-        DijkstraShortestPath<String,String> alg = new DijkstraShortestPath(g);
+        DijkstraShortestPath<String,String> alg = new DijkstraShortestPath<String,String>(g);
         List<String> l = alg.getPath(origin, destionation);
         
         if (l == null || l.size() == 0) {
-        	return null;
+        	buses = null;
+        	return;
         }
               
-        String caminho = "";
+        String caminhoBuses = "";
+        String caminhosStops = "";
                 
         List<String> candidatosAnteriores = Arrays.asList(l.get(0).split(" "));
          
@@ -116,30 +121,33 @@ public class BusTravelGenerator {
             boolean achouAlgumCandidato = false;
             List<String> candidatosProximo = Arrays.asList(l.get(i).split(" "));    
             String lastProximo = "";
+            String lastStop = "";
             for (int j = 1; j < candidatosAnteriores.size(); j++) {                
                 String proximo = candidatosAnteriores.get(j);
                 if (!candidatosProximo.contains(proximo)) {  
                    candidatosProximo.remove(proximo);  
                    lastProximo = proximo;
+                   lastStop = candidatosProximo.get(0);
                 } else {                 
                     achouAlgumCandidato = true;
                 }           
             }
             
             if (!achouAlgumCandidato) {                
-                caminho = caminho + lastProximo + " ";
+            	caminhoBuses = caminhoBuses + lastProximo + " ";
+            	caminhosStops = caminhosStops + lastStop + " ";
                 candidatosAnteriores = candidatosProximo;  
             }        
             
             if (i == l.size() - 1) {  
-                caminho = caminho + candidatosAnteriores.get(1) + " ";
+            	caminhoBuses = caminhoBuses + candidatosAnteriores.get(1) + " ";
+            	caminhosStops = caminhosStops + candidatosProximo.get(0) + " ";
             }
                
         }
         
-        List<String> buses = Arrays.asList(caminho.split(" "));
-        
-        return buses;        
+        buses = Arrays.asList(caminhoBuses.split(" "));    
+        path = Arrays.asList(caminhosStops.split(" "));    
     
     }
 		

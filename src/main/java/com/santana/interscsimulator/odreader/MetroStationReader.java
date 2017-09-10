@@ -17,7 +17,7 @@ import com.santana.interscsimulator.entity.MetroStation;
 public class MetroStationReader {
 	
 
-	private static final String fileName = "C:/dev/simulator/metro_verde.xlsx";
+	private static final String fileName = "/home/eduardo/entrada/Dados_Paraisopolis/metro.xlsx";
 
 	public static void main(String [] args) throws IOException {
 		
@@ -28,7 +28,7 @@ public class MetroStationReader {
 		Iterator<Row> rowIterator = sheetAlunos.iterator();
 		
 
-		PrintWriter writer = new PrintWriter("c:/dev/metro.xml", "UTF-8");
+		PrintWriter writer = new PrintWriter("/home/eduardo/entrada/Dados_Paraisopolis/metro.xml", "UTF-8");
 
 	    writer.println("<metro>");	    
 
@@ -49,8 +49,8 @@ public class MetroStationReader {
 				
 				String stationName = row.getCell(8).getStringCellValue();
 											
-				String lat = row.getCell(9).getStringCellValue().replace(',', '.');
-				String lon = row.getCell(10).getStringCellValue().replace(',', '.');;
+				String lat = row.getCell(10).getStringCellValue().replace(',', '.');
+				String lon = row.getCell(11).getStringCellValue().replace(',', '.');;
 				
 				long [] idsOrigin = null;
 				int dist = 1000;
@@ -82,8 +82,8 @@ public class MetroStationReader {
 				
 				String stationName = row.getCell(8).getStringCellValue();
 				
-				String lat = row.getCell(9).getStringCellValue().replace(',', '.');
-				String lon = row.getCell(10).getStringCellValue().replace(',', '.');;
+				String lat = row.getCell(10).getStringCellValue().replace(',', '.');
+				String lon = row.getCell(11).getStringCellValue().replace(',', '.');;
 				
 				long [] idsOrigin = null;
 				int dist = 1000;
