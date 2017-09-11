@@ -123,7 +123,7 @@ public class ODReader {
 						sb.append("\" link_origin=\"");
 						sb.append(idsOrigin[1]);
 						sb.append("\" count=\"");
-						sb.append(multiplicador);
+						sb.append(1);
 						sb.append("\" start=\"");
 						sb.append(point.getTimeStart());
 						sb.append("\" mode=\"");
@@ -172,7 +172,7 @@ public class ODReader {
 							
 						sb.append("   <multi_trip ");
 						sb.append(" count=\"");
-						sb.append(multiplicador);
+						sb.append(1);
 						sb.append("\" start=\"");
 						sb.append(point.getTimeStart());
 						sb.append("\" type=\"hospital\"");
@@ -274,7 +274,7 @@ public class ODReader {
 							
 						sb.append("   <multi_trip ");
 						sb.append(" count=\"");
-						sb.append(multiplicador);
+						sb.append(1);
 						sb.append("\" start=\"");
 						sb.append(point.getTimeStart());
 						sb.append("\" type=\"hospital\"");

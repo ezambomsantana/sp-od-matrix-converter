@@ -62,20 +62,33 @@ public class BusReader {
 
 	private static void writeBus(Bus bus, PrintWriter writer) {
 		
-		StringBuilder sb = new StringBuilder();
-		sb.append("    <bus id=\"");
-		sb.append(bus.getId());
-		sb.append("\" interval=\"1800\"");
-		sb.append(" start_time=\"300\"");
-		sb.append(" stops=\"");		
+
 		StringBuilder sb2 = new StringBuilder();
 		long idNode = Connector.getPointByBusStopt(bus.getStops().get(0));
 		sb2.append(idNode);
 		bus.getStops().remove(0);
+		
+		int count = 1;
+		long lastNode = idNode;
 		for (Long stop : bus.getStops()) {
 			idNode = Connector.getPointByBusStopt(stop);
-			sb2.append("," + idNode);
+			if (lastNode != idNode) {
+				sb2.append("," + idNode);
+				lastNode = idNode;
+				count++;
+			}
 		}
+		
+		if (count < 5) {
+			return;
+		}
+		
+		StringBuilder sb = new StringBuilder();
+		sb.append("    <bus id=\"");
+		sb.append(bus.getId());
+		sb.append("\" interval=\"3600\"");
+		sb.append(" start_time=\"18000\"");
+		sb.append(" stops=\"");				
 		sb.append(sb2);
 		sb.append("\" />");
 		
