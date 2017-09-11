@@ -4,7 +4,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -40,12 +42,13 @@ public class MetroStationReader {
 		long idLastStation = 0;
 		int cont = 1;
 		
+		Map<String, MetroStation> estacoes = new  HashMap<String, MetroStation>();
 					
 		while (rowIterator.hasNext()) {
 			Row row = rowIterator.next();		
 			String line = row.getCell(1).getStringCellValue();
+			
 			if (!line.equals(lastLine)) {
-				lastLine = line;
 				
 				String stationName = row.getCell(8).getStringCellValue();
 											
@@ -58,69 +61,109 @@ public class MetroStationReader {
 					idsOrigin = Connector.selectNearestPoint(Double.parseDouble(lat), Double.parseDouble(lon) , dist);
 					dist = dist * 5;
 				}
-								
-				stations.append("    <station name=\"");
-				stations.append(stationName);
-				stations.append("\" idNode=\"");
-				stations.append(idsOrigin[0]);
-				stations.append("\" />\n");		
 				
-				MetroStation metro = new MetroStation();
-				metro.setId(cont);
-				metro.setLat(Double.parseDouble(lat));
-				metro.setLon(Double.parseDouble(lon));
-				metro.setIdNode(idsOrigin[0]);
-				metro.setName(stationName);
-				
-				Connector.insertMetroStation(metro);
-				
-				lastStation = stationName;
-				idLastStation = idsOrigin[0];
-				
+				if (!estacoes.containsKey(stationName)) {	
+					
+					stations.append("    <station name=\"");
+					stations.append(stationName);
+					stations.append("\" idNode=\"");
+					stations.append(idsOrigin[0]);
+					stations.append("\" />\n");		
+					
+					MetroStation metro = new MetroStation();
+					metro.setId(cont);
+					metro.setLat(Double.parseDouble(lat));
+					metro.setLon(Double.parseDouble(lon));
+					metro.setIdNode(idsOrigin[0]);
+					metro.setName(stationName);
+					
+					Connector.insertMetroStation(metro);
+					
+					lastStation = stationName;
+					idLastStation = idsOrigin[0];
+					
+					estacoes.put(stationName, metro);
+					
+					links.append("\n");
+					
+				} else {
+					
+					MetroStation metroStation = estacoes.get(stationName);
+										
+					lastStation = stationName;
+					idLastStation = metroStation.getIdNode();
+					links.append("\n");
+					
+				}
 				
 			} else {
 				
 				String stationName = row.getCell(8).getStringCellValue();
+
+				if (!estacoes.containsKey(stationName)) {	
+					
+					String lat = row.getCell(10).getStringCellValue().replace(',', '.');
+					String lon = row.getCell(11).getStringCellValue().replace(',', '.');;
+					
+					long [] idsOrigin = null;
+					int dist = 1000;
+					while (idsOrigin == null) {
+						idsOrigin = Connector.selectNearestPoint(Double.parseDouble(lat), Double.parseDouble(lon) , dist);
+						dist = dist * 5;
+					}
+					
+					stations.append("    <station name=\"");
+					stations.append(stationName);
+					stations.append("\" idNode=\"");
+					stations.append(idsOrigin[0]);
+					stations.append("\" />\n");		
+
+					MetroStation metro = new MetroStation();
+					metro.setId(cont);
+					metro.setLat(Double.parseDouble(lat));
+					metro.setLon(Double.parseDouble(lon));
+					metro.setIdNode(idsOrigin[0]);
+					metro.setName(stationName);
+
+					estacoes.put(stationName, metro);
+
+					Connector.insertMetroStation(metro);
+					
+					links.append("    <link nameOrigin=\"");
+					links.append(stationName);
+					links.append("\" nameDestination=\"");
+					links.append(lastStation);
+					links.append("\" idOrigin=\"");
+					links.append(idsOrigin[0]);
+					links.append("\" idDestination=\"");
+					links.append(idLastStation);
+					links.append("\" />\n");
+					
+					lastStation = stationName;
+					idLastStation = idsOrigin[0];
 				
-				String lat = row.getCell(10).getStringCellValue().replace(',', '.');
-				String lon = row.getCell(11).getStringCellValue().replace(',', '.');;
+				} else {
+					
+					MetroStation metroStation = estacoes.get(stationName);
+					
+					links.append("    <link nameOrigin=\"");
+					links.append(stationName);
+					links.append("\" nameDestination=\"");
+					links.append(lastStation);
+					links.append("\" idOrigin=\"");
+					links.append(metroStation.getIdNode());
+					links.append("\" idDestination=\"");
+					links.append(idLastStation);
+					links.append("\" />\n");
+					
+					lastStation = stationName;
+					idLastStation = metroStation.getIdNode();
 				
-				long [] idsOrigin = null;
-				int dist = 1000;
-				while (idsOrigin == null) {
-					idsOrigin = Connector.selectNearestPoint(Double.parseDouble(lat), Double.parseDouble(lon) , dist);
-					dist = dist * 5;
+					
 				}
 				
-				stations.append("    <station name=\"");
-				stations.append(stationName);
-				stations.append("\" idNode=\"");
-				stations.append(idsOrigin[0]);
-				stations.append("\" />\n");
-				
-				links.append("    <link nameOrigin=\"");
-				links.append(stationName);
-				links.append("\" nameDestination=\"");
-				links.append(lastStation);
-				links.append("\" idOrigin=\"");
-				links.append(idsOrigin[0]);
-				links.append("\" idDestination=\"");
-				links.append(idLastStation);
-				links.append("\" />\n");
-
-				MetroStation metro = new MetroStation();
-				metro.setId(cont);
-				metro.setLat(Double.parseDouble(lat));
-				metro.setLon(Double.parseDouble(lon));
-				metro.setIdNode(idsOrigin[0]);
-				metro.setName(stationName);
-				
-				Connector.insertMetroStation(metro);
-				
-				lastStation = stationName;
-				idLastStation = idsOrigin[0];
-				
 			}
+			lastLine = line;
 			cont++;
 			
 		}
