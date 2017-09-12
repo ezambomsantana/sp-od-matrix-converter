@@ -298,23 +298,36 @@ public class ODReader {
 							
 							for (int o = 0; o < selectedBuses.size(); o++) {
 						
-								String bus = selectedBuses.get(o);
+ 								String bus = selectedBuses.get(o);
 								String path[] = selectedPath.get(o).split(":");
 								
-								long [] idNodeLink = Connector.getPointAndLinkByBusStopt(Long.valueOf(path[1]));
+								long [] idNodeLink = Connector.getPointAndLinkByBusStopt(Long.valueOf(path[0]));
 								
 								sb.append("      <trip origin=\"");
 								sb.append(inicio);
 								sb.append("\" link_origin=\"");
 								sb.append(linkInicio);
-								sb.append("\" destination=\"");
-								sb.append(idNodeLink[0]);
-								sb.append("\" link_destination=\"");
-								sb.append(idNodeLink[1]);
+								
+								if (o != selectedBuses.size() -1) {
+									sb.append("\" destination=\"");
+									sb.append(idNodeLink[0]);
+									sb.append("\" link_destination=\"");
+									sb.append(idNodeLink[1]);									
+								} else {
+									idNodeLink = Connector.getPointAndLinkByBusStopt(Long.valueOf(path[1]));
+									sb.append("\" destination=\"");
+									sb.append(idNodeLink[0]);
+									sb.append("\" link_destination=\"");
+									sb.append(idNodeLink[1]);											
+								}
+								
 								sb.append("\" line=\"");
 								sb.append(bus);
 								sb.append("\" mode=\"bus\"");
 								sb.append("/>\n");	
+								
+
+							//	idNodeLink = Connector.getPointAndLinkByBusStopt(Long.valueOf(path[1]));
 								
 								inicio = idNodeLink[0];
 								linkInicio = idNodeLink[1];

@@ -110,44 +110,62 @@ public class BusTravelGenerator {
         	buses = null;
         	return;
         }
+        
+        System.out.println("     ");
+        for (int i = 0; i < l.size(); i++) {
+        	System.out.println(l.get(i));
+        }
               
         String caminhoBuses = "";
         String caminhosStops = "";
+        
+        String lastProximo = "";
+        String lastStop = "";
                 
-        List<String> candidatosAnteriores = Arrays.asList(l.get(0).split(" "));
+        List<String> candidatos = new ArrayList<String>(Arrays.asList(l.get(0).split(" ")));
          
-        for (int i = 0; i < l.size(); i++) {
+        for (int i = 1; i < l.size(); i++) {
                         
             boolean achouAlgumCandidato = false;
-            List<String> candidatosProximo = Arrays.asList(l.get(i).split(" "));    
-            String lastProximo = "";
-            String lastStop = "";
-            for (int j = 1; j < candidatosAnteriores.size(); j++) {                
-                String proximo = candidatosAnteriores.get(j);
+            List<String> candidatosProximo = Arrays.asList(l.get(i).split(" "));   
+            List<String> removerCandidatos = new ArrayList<String>(); 
+
+            for (int j = 1; j < candidatos.size(); j++) {                
+                String proximo = candidatos.get(j);
                 if (!candidatosProximo.contains(proximo)) {  
-                   candidatosProximo.remove(proximo);  
-                   lastProximo = proximo;
-                   lastStop = candidatosProximo.get(0);
-                } else {                 
+                    lastProximo = proximo;
+                    lastStop = candidatosProximo.get(0);  
+                    candidatosProximo.remove(proximo);  
+                    removerCandidatos.add(proximo);
+                } else {               
                     achouAlgumCandidato = true;
                 }           
             }
+            candidatos.removeAll(removerCandidatos);
             
             if (!achouAlgumCandidato) {                
             	caminhoBuses = caminhoBuses + lastProximo + " ";
             	caminhosStops = caminhosStops + lastStop + " ";
-                candidatosAnteriores = candidatosProximo;  
+                candidatos = new ArrayList<String>(candidatosProximo);  
             }        
             
             if (i == l.size() - 1) {  
-            	caminhoBuses = caminhoBuses + candidatosAnteriores.get(1) + " ";
+            	caminhoBuses = caminhoBuses + candidatos.get(1) + " ";
             	caminhosStops = caminhosStops + candidatosProximo.get(0) + " ";
             }
                
         }
         
+        
         buses = Arrays.asList(caminhoBuses.split(" "));    
         path = Arrays.asList(caminhosStops.split(" "));    
+        for (String b : buses) {
+        	System.out.println(b);
+        }
+        
+        for (String p : path) {
+        	System.out.println(p);
+        }
     
     }
 		
