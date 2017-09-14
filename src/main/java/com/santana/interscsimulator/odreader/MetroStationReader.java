@@ -167,8 +167,12 @@ public class MetroStationReader {
 			cont++;
 			
 		}
+		writer.println("  <stations>");
 	    writer.println(stations.toString());
+		writer.println("  </stations>");
+		writer.println("  <links>");
 	    writer.println(links.toString());
+		writer.println("  </links>");
 	    writer.println("</metro>");
 	    writer.close();
 		
