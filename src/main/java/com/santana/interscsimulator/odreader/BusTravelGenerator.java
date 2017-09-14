@@ -110,12 +110,7 @@ public class BusTravelGenerator {
         	buses = null;
         	return;
         }
-        
-        System.out.println("     ");
-        for (int i = 0; i < l.size(); i++) {
-        	System.out.println(l.get(i));
-        }
-              
+                      
         String caminhoBuses = "";
         String caminhosStops = "";
         
@@ -158,15 +153,7 @@ public class BusTravelGenerator {
         
         
         buses = Arrays.asList(caminhoBuses.split(" "));    
-        path = Arrays.asList(caminhosStops.split(" "));    
-        for (String b : buses) {
-        	System.out.println(b);
-        }
-        
-        for (String p : path) {
-        	System.out.println(p);
-        }
-    
+        path = Arrays.asList(caminhosStops.split(" "));        
     }
 		
 	

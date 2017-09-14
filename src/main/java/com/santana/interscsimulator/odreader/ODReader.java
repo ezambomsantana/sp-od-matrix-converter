@@ -214,7 +214,7 @@ public class ODReader {
 						
 						int hourStart = (int)row.getCell(9).getNumericCellValue();
 						point.setHourStart(hourStart);
-						
+												
 						int minuteStart = (int)row.getCell(10).getNumericCellValue();
 						point.setMinuteStart(minuteStart);
 						
@@ -256,7 +256,7 @@ public class ODReader {
 								long [] rd = idBusStationDestinationList.get(z);
 								BusTravelGenerator.getShortestPath(String.valueOf(ro[1]), String.valueOf(rd[1]));
 								List<String> buses = BusTravelGenerator.buses;
-								if (buses != null) {
+								if (buses != null && buses.size() > 0 && !buses.get(0).equals("")) {
 									if (selectedBuses == null || selectedBuses.size() > buses.size()) {
 										selectedBuses = buses;
 										selectedPath = BusTravelGenerator.path;
