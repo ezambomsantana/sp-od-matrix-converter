@@ -170,8 +170,9 @@ public class ODReader {
 
 						StringBuilder sb = new StringBuilder();
 							
-						sb.append("   <multi_trip ");
-						sb.append(" count=\"");
+						sb.append("   <multi_trip name=\"");
+						sb.append(i);
+						sb.append("\" count=\"");
 						sb.append(1);
 						sb.append("\" start=\"");
 						sb.append(point.getTimeStart());
@@ -272,8 +273,9 @@ public class ODReader {
 
 						StringBuilder sb = new StringBuilder();
 							
-						sb.append("   <multi_trip ");
-						sb.append(" count=\"");
+						sb.append("   <multi_trip name=\"");
+						sb.append(i);
+						sb.append("\"  count=\"");
 						sb.append(1);
 						sb.append("\" start=\"");
 						sb.append(point.getTimeStart());
