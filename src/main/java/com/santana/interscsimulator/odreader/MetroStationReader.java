@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -51,9 +52,17 @@ public class MetroStationReader {
 			if (!line.equals(lastLine)) {
 				
 				String stationName = row.getCell(8).getStringCellValue();
-											
-				String lat = row.getCell(10).getStringCellValue().replace(',', '.');
-				String lon = row.getCell(11).getStringCellValue().replace(',', '.');;
+							
+				String lat = "";
+				String lon = "";
+				if (row.getCell(10).getCellTypeEnum() == CellType.STRING) {
+					lat = row.getCell(10).getStringCellValue().replace(',', '.');
+					lon = row.getCell(11).getStringCellValue().replace(',', '.');;
+				} else {
+					lat = String.valueOf(row.getCell(10).getNumericCellValue());
+					lon = String.valueOf(row.getCell(11).getNumericCellValue());
+					
+				}
 				
 				long [] idsOrigin = null;
 				int dist = 1000;
@@ -102,8 +111,16 @@ public class MetroStationReader {
 
 				if (!estacoes.containsKey(stationName)) {	
 					
-					String lat = row.getCell(10).getStringCellValue().replace(',', '.');
-					String lon = row.getCell(11).getStringCellValue().replace(',', '.');;
+					String lat = "";
+					String lon = "";
+					if (row.getCell(10).getCellTypeEnum() == CellType.STRING) {
+						lat = row.getCell(10).getStringCellValue().replace(',', '.');
+						lon = row.getCell(11).getStringCellValue().replace(',', '.');;
+					} else {
+						lat = String.valueOf(row.getCell(10).getNumericCellValue());
+						lon = String.valueOf(row.getCell(11).getNumericCellValue());
+						
+					}
 					
 					long [] idsOrigin = null;
 					int dist = 1000;
