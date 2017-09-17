@@ -206,7 +206,7 @@ public class Connector {
 	
 	public static long [] selectNearestPoint(double lat, double lon , int dist) {
 		
-		long [] result = new long[2];
+		long [] result = new long[3];
 		try {
 
 			String sql = "SELECT id, id_link, ST_Distance(geom, poi)/1000 AS distance_km " + "FROM point, "
@@ -219,6 +219,7 @@ public class Connector {
 			while (rs.next()) {
 				result[0] = rs.getLong(1);
 				result[1] = rs.getLong(2);
+				result[1] = rs.getLong(3);
 				return result;
 			}
 
@@ -254,6 +255,33 @@ public class Connector {
 		return 0;
 
 	}
+	
+	public static long [] selectNearestMetroStationDistance(double lat, double lon , int dist) {
+		
+		long [] result = new long[2];
+		try {
+
+			String sql = "SELECT id, id_node, ST_Distance(geom, poi)/1000 AS distance_km " + "FROM metro_station, "
+					+ "(select ST_MakePoint(" + lat + "," + lon
+					+ ")::geography as poi) as poi " + "WHERE ST_DWithin(geom, poi," + dist + " ) "
+					+ "ORDER BY ST_Distance(geom, poi) " + "LIMIT 1; ";
+
+			PreparedStatement ps = connection.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery();
+			while (rs.next()) {
+				result[0] = rs.getLong(2);
+				result[1] = rs.getLong(3);
+				return result;
+			}
+
+		} catch (SQLException e) {
+			System.out.println("Connection Failed! Check output console");
+			e.printStackTrace();
+		}
+		return null;
+
+	}
+	
 	
 	public static long selectNearestMetroStation(double lat, double lon , int dist) {
 		
