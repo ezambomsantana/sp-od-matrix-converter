@@ -14,6 +14,8 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
+import com.santana.interscsimulator.db.Connector;
+
 /**
  * 
  * This file reads an open street maps file and saves all the nodes and links to a PostgreSQL database.
@@ -50,6 +52,8 @@ public class EstacionamentoReader {
 			Node nNode = nList.item(temp);
 
 			if (nNode.getNodeType() == Node.ELEMENT_NODE) {
+				
+				System.out.println(temp);
 								
 				Element eElement = (Element) nNode;
 
@@ -59,14 +63,19 @@ public class EstacionamentoReader {
 				String lat = ((Element) coordinates).getElementsByTagName("lat").item(0).getTextContent();
 				String lon = ((Element) coordinates).getElementsByTagName("lon").item(0).getTextContent();
 				
+
+				long [] idsOrigin = null;
+	    		int dist = 1000;
+				while (idsOrigin == null) {
+					idsOrigin = Connector.selectNearestPoint(Double.parseDouble(lat), Double.parseDouble(lon), dist);
+					dist = dist * 5;						
+				}
+				
 				sb.append("    <spot uuid=\"");
 				sb.append(id);
-				sb.append("\" lat=\"");
-				sb.append(lat);
-				sb.append("\" lon=\"");
-				sb.append(lon);
+				sb.append("\" node=\"");
+				sb.append(idsOrigin[0]);
 				sb.append("\" />\n");
-				
 				
 			}
 
