@@ -71,11 +71,14 @@ public class EstacionamentoReader {
 					dist = dist * 5;						
 				}
 				
+				
+				
 				sb.append("    <spot uuid=\"");
 				sb.append(id);
 				sb.append("\" node=\"");
 				sb.append(idsOrigin[0]);
 				sb.append("\" />\n");
+				
 				
 			}
 
