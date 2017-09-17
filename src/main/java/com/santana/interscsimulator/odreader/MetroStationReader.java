@@ -14,24 +14,24 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import com.santana.interscsimulator.db.Connector;
-import com.santana.interscsimulator.entity.MapPoint;
 import com.santana.interscsimulator.entity.MetroStation;
 
 public class MetroStationReader {
 	
 
-	private static final String fileName = "/home/eduardo/entrada/Dados_Paraisopolis/metro.xlsx";
-
+	private static final String inputFile = "/home/eduardo/entrada/Dados_Paraisopolis/metro.xlsx";
+	private static final String outputFile = "/home/eduardo/entrada/Dados_Paraisopolis/metro.xlsx";
+	
 	public static void main(String [] args) throws IOException {
 		
-		FileInputStream arquivo = new FileInputStream(new File(fileName));
+		FileInputStream arquivo = new FileInputStream(new File(inputFile));
 
 		XSSFWorkbook workbook = new XSSFWorkbook(arquivo);
 		XSSFSheet sheetAlunos = workbook.getSheetAt(0);
 		Iterator<Row> rowIterator = sheetAlunos.iterator();
 		
 
-		PrintWriter writer = new PrintWriter("/home/eduardo/entrada/Dados_Paraisopolis/metro.xml", "UTF-8");
+		PrintWriter writer = new PrintWriter(outputFile, "UTF-8");
 
 	    writer.println("<metro>");	    
 
