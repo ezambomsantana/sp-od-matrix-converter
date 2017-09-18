@@ -219,7 +219,7 @@ public class Connector {
 			while (rs.next()) {
 				result[0] = rs.getLong(1);
 				result[1] = rs.getLong(2);
-				result[1] = rs.getLong(3);
+				result[2] = rs.getLong(3);
 				return result;
 			}
 

@@ -118,7 +118,7 @@ public class ODReaderNewTransportType {
 						long [] idMetroOrigin = Connector.selectNearestMetroStationDistance(point.getLatOrigin() , point.getLonOrigin(), 500);
 						long [] idMetroDestination = Connector.selectNearestMetroStationDistance(point.getLatDestination(), point.getLonDestination(), 500);
 						
-						if (idMetroOrigin != null && idMetroDestination != null) {
+						if (mode.equals("car") && (idMetroOrigin != null && idMetroDestination != null)) {
 							System.out.println("sim - car");
 							
 							MapPoint pointOrigin = Connector.getPointById(String.valueOf(idMetroOrigin[0]));
