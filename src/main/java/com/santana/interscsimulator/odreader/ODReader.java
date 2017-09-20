@@ -61,7 +61,7 @@ public class ODReader {
 				if (row.getCell(0) != null && row.getCell(4) != null) {
 					Point point = new Point();
 
-					double multiplicador = row.getCell(0).getNumericCellValue();					
+					int multiplicador = (int) row.getCell(0).getNumericCellValue();					
 					double latOrigin = row.getCell(2).getNumericCellValue();
 					double lonOrigin = row.getCell(3).getNumericCellValue();
 					double latDestination = row.getCell(5).getNumericCellValue();
@@ -123,7 +123,7 @@ public class ODReader {
 						sb.append("\" link_origin=\"");
 						sb.append(idsOrigin[1]);
 						sb.append("\" count=\"");
-						sb.append(1);
+						sb.append(multiplicador);
 						sb.append("\" start=\"");
 						sb.append(point.getTimeStart());
 						sb.append("\" mode=\"");
@@ -173,7 +173,7 @@ public class ODReader {
 						sb.append("   <multi_trip name=\"");
 						sb.append(i);
 						sb.append("\" count=\"");
-						sb.append(1);
+						sb.append(multiplicador);
 						sb.append("\" start=\"");
 						sb.append(point.getTimeStart());
 						sb.append("\" type=\"hospital\"");
@@ -276,7 +276,7 @@ public class ODReader {
 						sb.append("   <multi_trip name=\"");
 						sb.append(i);
 						sb.append("\"  count=\"");
-						sb.append(1);
+						sb.append(multiplicador);
 						sb.append("\" start=\"");
 						sb.append(point.getTimeStart());
 						sb.append("\" type=\"hospital\"");
