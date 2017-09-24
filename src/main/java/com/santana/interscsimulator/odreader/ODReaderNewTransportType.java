@@ -133,7 +133,8 @@ public class ODReaderNewTransportType {
 							sb.append(multiplicador);
 							sb.append("\" start=\"");
 							sb.append(point.getTimeStart());
-							sb.append("\" type=\"hospital\"");
+							sb.append("\" mode=\"metro\"");
+							sb.append(" type=\"hospital\"");
 							sb.append(">\n");
 							
 							sb.append("      <trip origin=\"");
@@ -238,7 +239,8 @@ public class ODReaderNewTransportType {
 						sb.append(multiplicador);
 						sb.append("\" start=\"");
 						sb.append(point.getTimeStart());
-						sb.append("\" type=\"hospital\"");
+						sb.append("\" mode=\"metro\"");
+						sb.append(" type=\"hospital\"");
 						sb.append(">\n");
 						
 						sb.append("      <trip origin=\"");
@@ -323,7 +325,8 @@ public class ODReaderNewTransportType {
 							sb.append(multiplicador);
 							sb.append("\" start=\"");
 							sb.append(point.getTimeStart());
-							sb.append("\" type=\"hospital\"");
+							sb.append("\" mode=\"metro\"");
+							sb.append(" type=\"hospital\"");
 							sb.append(">\n");
 							
 							sb.append("      <trip origin=\"");
@@ -396,7 +399,8 @@ public class ODReaderNewTransportType {
 							sb.append(multiplicador);
 							sb.append("\" start=\"");
 							sb.append(point.getTimeStart());
-							sb.append("\" type=\"hospital\"");
+							sb.append("\" mode=\"bus\"");
+							sb.append(" type=\"hospital\"");
 							sb.append(">\n");
 													
 							sb.append("      <trip origin=\"");
@@ -444,10 +448,7 @@ public class ODReaderNewTransportType {
 									sb.append(bus);
 									sb.append("\" mode=\"bus\"");
 									sb.append("/>\n");	
-									
-	
-								//	idNodeLink = Connector.getPointAndLinkByBusStopt(Long.valueOf(path[1]));
-									
+																		
 									inicio = idNodeLink[0];
 									linkInicio = idNodeLink[1];
 									

@@ -176,7 +176,8 @@ public class ODReader {
 						sb.append(multiplicador);
 						sb.append("\" start=\"");
 						sb.append(point.getTimeStart());
-						sb.append("\" type=\"hospital\"");
+						sb.append("\" mode=\"metro\"");
+						sb.append(" type=\"hospital\"");
 						sb.append(">\n");
 						
 						sb.append("      <trip origin=\"");
@@ -279,7 +280,8 @@ public class ODReader {
 						sb.append(multiplicador);
 						sb.append("\" start=\"");
 						sb.append(point.getTimeStart());
-						sb.append("\" type=\"hospital\"");
+						sb.append("\" mode=\"bus\"");
+						sb.append(" 	 type=\"hospital\"");
 						sb.append(">\n");
 												
 						sb.append("      <trip origin=\"");
