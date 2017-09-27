@@ -54,6 +54,11 @@ public class ODReader {
 			PrintWriter writer = new PrintWriter(ODReader.outputFileName, "UTF-8");
 
 		    writer.println("<scsimulator_matrix>");
+		    
+		    int countBus = 0;
+		    int countCar = 0;
+		    int countMetro = 0;
+		    int countWalk = 0;
 						
 			while (rowIterator.hasNext()) {
 				Row row = rowIterator.next();				
@@ -81,6 +86,12 @@ public class ODReader {
 					} 
 					
 					if (mode.equals("car") || mode.equals("walk")) {
+						
+						if (mode.equals("car")) {
+							countCar = countCar + multiplicador;
+						} else {
+							countWalk = countWalk + multiplicador;
+						}
 					
 						int hourStart = (int)row.getCell(9).getNumericCellValue();
 						point.setHourStart(hourStart);
@@ -132,6 +143,8 @@ public class ODReader {
 					    writer.println(sb.toString());
 					    
 					} else if (mode.equals("subway")) {
+						
+						countMetro = countMetro + multiplicador;
 						
 						int hourStart = (int)row.getCell(9).getNumericCellValue();
 						point.setHourStart(hourStart);
@@ -213,6 +226,8 @@ public class ODReader {
 					    writer.println(sb.toString());
 					    
 					} else if (mode.equals("bus")) {
+						
+						countBus = countBus + multiplicador;
 						
 						int hourStart = (int)row.getCell(9).getNumericCellValue();
 						point.setHourStart(hourStart);
@@ -375,6 +390,12 @@ public class ODReader {
 				}
 				
 			}
+			
+			System.out.println("Bus: " + countBus);
+			System.out.println("Car: " + countCar);
+			System.out.println("Metro: " + countMetro);
+			System.out.println("Walk: " + countWalk);
+			
 			arquivo.close();
 		    writer.println("</scsimulator_matrix>");
 			

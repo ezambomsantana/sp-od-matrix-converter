@@ -52,6 +52,10 @@ public class ODReaderNewTransportType {
 			System.out.println("lido!");
 			rowIterator.next();
 			
+		    int countBus = 0;
+		    int countCar = 0;
+		    int countMetro = 0;
+		    int countWalk = 0;			
 
 			PrintWriter writer = new PrintWriter(ODReaderNewTransportType.outputFileName, "UTF-8");
 
@@ -83,7 +87,7 @@ public class ODReaderNewTransportType {
 					} 
 					
 					if (mode.equals("car") || mode.equals("walk")) {
-					
+										
 						int hourStart = (int)row.getCell(9).getNumericCellValue();
 						point.setHourStart(hourStart);
 						
@@ -119,6 +123,7 @@ public class ODReaderNewTransportType {
 						long [] idMetroDestination = Connector.selectNearestMetroStationDistance(point.getLatDestination(), point.getLonDestination(), 1000);
 						
 						if (mode.equals("car") && (idMetroOrigin != null && idMetroDestination != null)) {
+							countMetro = countMetro + multiplicador;
 							System.out.println("sim - car");
 							
 							MapPoint pointOrigin = Connector.getPointById(String.valueOf(idMetroOrigin[0]));
@@ -169,9 +174,13 @@ public class ODReaderNewTransportType {
 							sb.append("   </multi_trip>");			
 						    writer.println(sb.toString());
 							
-						} else {					
-						
-
+						} else {	
+							
+							if (mode.equals("car")) {
+								countCar = countCar + multiplicador;
+							} else {
+								countWalk = countWalk + multiplicador;
+							}
 		
 							StringBuilder sb = new StringBuilder();
 							
@@ -195,6 +204,7 @@ public class ODReaderNewTransportType {
 						}
 					    
 					} else if (mode.equals("subway")) {
+						countMetro = countMetro + multiplicador;
 						
 						int hourStart = (int)row.getCell(9).getNumericCellValue();
 						point.setHourStart(hourStart);
@@ -310,7 +320,8 @@ public class ODReaderNewTransportType {
 						long [] idMetroOrigin = Connector.selectNearestMetroStationDistance(point.getLatOrigin() , point.getLonOrigin(), 500);
 						long [] idMetroDestination = Connector.selectNearestMetroStationDistance(point.getLatDestination(), point.getLonDestination(), 500);
 						
-						if (idMetroOrigin != null && idMetroDestination != null) {
+					/*	if (idMetroOrigin != null && idMetroDestination != null) {
+							countMetro = countMetro + multiplicador;
 							System.out.println("sim - bus");
 							
 							MapPoint pointOrigin = Connector.getPointById(String.valueOf(idMetroOrigin[0]));
@@ -361,7 +372,8 @@ public class ODReaderNewTransportType {
 							sb.append("   </multi_trip>");			
 						    writer.println(sb.toString());
 							
-						} else {
+						} else { */
+							countBus = countBus + multiplicador;
 																	
 							List<long[]> idBusStationOriginList = Connector.selectNearestBusStop(point.getLatOrigin() , point.getLonOrigin(), 10000);
 							List<long[]> idBusStationDestinationList = Connector.selectNearestBusStop(point.getLatDestination(), point.getLonDestination(), 10000);
@@ -479,7 +491,7 @@ public class ODReaderNewTransportType {
 							sb.append("   </multi_trip>");			
 						    writer.println(sb.toString());
 						    
-						}
+					//	}
 						
 					}
 					
@@ -493,6 +505,12 @@ public class ODReaderNewTransportType {
 				}
 				
 			}
+
+			System.out.println("Bus: " + countBus);
+			System.out.println("Car: " + countCar);
+			System.out.println("Metro: " + countMetro);
+			System.out.println("Walk: " + countWalk);
+			
 			arquivo.close();
 		    writer.println("</scsimulator_matrix>");
 			
