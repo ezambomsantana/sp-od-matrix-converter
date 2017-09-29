@@ -77,7 +77,13 @@ public class EstacionamentoReader {
 				sb.append(id);
 				sb.append("\" node=\"");
 				sb.append(idsOrigin[0]);
+				sb.append("\" lat=\"");
+				sb.append(lat);
+				sb.append("\" lon=\"");
+				sb.append(lon);
 				sb.append("\" />\n");
+				
+				System.out.println(sb.toString());
 				
 				
 			}
