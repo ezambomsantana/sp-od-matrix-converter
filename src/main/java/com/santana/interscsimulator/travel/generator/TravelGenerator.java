@@ -19,7 +19,7 @@ public class TravelGenerator {
 
 		try {
 
-			File mapFile = new File("/home/eduardo/map2.xml");
+			File mapFile = new File("/home/eduardo/map.xml");
 			//File hospitalFile = new File("/home/eduardo/entrada/hospital/hospitals.xml");
 			
 			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
@@ -35,7 +35,7 @@ public class TravelGenerator {
 
 			NodeList nList = docMap.getElementsByTagName("link");
 
-			for (int temp = 0; temp < 100; temp++) {
+			for (int temp = 0; temp < 1000; temp++) {
 
 				int nOrigin = (int) (Math.random() * nList.getLength());
 				int nDestination = (int) (Math.random() * nList.getLength());
