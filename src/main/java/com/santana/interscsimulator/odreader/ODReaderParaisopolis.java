@@ -24,7 +24,7 @@ import com.santana.interscsimulator.entity.Point;
  * @author ezambomsantana
  *
  */
-public class ODReader {
+public class ODReaderParaisopolis {
 
 	private static final String inputFileName = "/home/eduardo/entrada/paraisopolis/matriz.xlsx";
 	private static final String outputFileName = "/home/eduardo/entrada/paraisopolis/trips.xml";
@@ -35,7 +35,7 @@ public class ODReader {
 			
 			BusTravelGenerator.init();
 			
-			FileInputStream arquivo = new FileInputStream(new File(ODReader.inputFileName));
+			FileInputStream arquivo = new FileInputStream(new File(ODReaderParaisopolis.inputFileName));
 
 			System.out.println("lido!");
 			XSSFWorkbook workbook = new XSSFWorkbook(arquivo);
@@ -51,7 +51,7 @@ public class ODReader {
 			rowIterator.next();
 			
 
-			PrintWriter writer = new PrintWriter(ODReader.outputFileName, "UTF-8");
+			PrintWriter writer = new PrintWriter(ODReaderParaisopolis.outputFileName, "UTF-8");
 
 		    writer.println("<scsimulator_matrix>");
 		    
