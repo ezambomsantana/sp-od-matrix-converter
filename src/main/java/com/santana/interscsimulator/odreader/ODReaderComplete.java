@@ -13,6 +13,8 @@ import com.santana.interscsimulator.entity.Point;
  * This file reads the OD matrix created by the subway company of Sao Paulo. You can 
  * find this matrix on the company's site. http://www.metro.sp.gov.br/
  * 
+ * Version used to SBRC 2018 paper
+ * 
  * @author ezambomsantana
  *
  */
@@ -62,25 +64,19 @@ public class ODReaderComplete {
 					int minuto = 0;
 					
 				    try {
-				    	multiplicador = (int) Double.parseDouble(dados[76]);					
+				    	multiplicador = (int) Double.parseDouble(dados[76]);	
 				    	latOrigin = Double.parseDouble(dados[2]);
 				    	lonOrigin = Double.parseDouble(dados[3]);
 				    	latDestination = Double.parseDouble(dados[59]);
 				    	lonDestination = Double.parseDouble(dados[60]);
 				    	hora = Integer.parseInt(dados[107]); 
 				    	minuto = Integer.parseInt(dados[108]); 
-				    	
-				    	if (hora < 6 || hora >= 10) {
-				    		continue;
-				    	}
-				    	
+				    					    	
 				    } catch (Exception e) {
 				    	System.out.println("erro");
 				    	continue;
 				    }
 					
-					countCar = countCar + multiplicador;
-				
 					point.setHourStart(hora);
 					
 					point.setMinuteStart(minuto);
@@ -111,7 +107,9 @@ public class ODReaderComplete {
 					if (idsOrigin[0] == idDestination[0]) {
 						continue;
 					}
-					
+
+					countCar = countCar + multiplicador;
+				
 
 					StringBuilder sb = new StringBuilder();
 					
