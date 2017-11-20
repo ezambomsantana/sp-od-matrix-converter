@@ -127,10 +127,10 @@ public class ODReaderComplete {
 					sb.append(point.getTimeStart());
 					sb.append("\" mode=\"");
 					sb.append("car");
-					sb.append("\" lat=\"");
-					sb.append(point.getLatDestination());
-					sb.append("\" lon=\"");
-					sb.append(point.getLonDestination());
+				//	sb.append("\" lat=\"");
+				//	sb.append(point.getLatDestination());
+				//	sb.append("\" lon=\"");
+				//	sb.append(point.getLonDestination());
 					sb.append("\" />");
 				    writer.println(sb.toString());
 				    i++;
