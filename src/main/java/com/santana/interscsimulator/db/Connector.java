@@ -361,4 +361,22 @@ public class Connector {
 		return null;
 	}
 
+	public static void insertLink(String id, String from) {
+		try {
+
+
+			PreparedStatement ps = connection.prepareStatement("insert into link(id, id_from) values('"
+					+ id + "','" 
+					+ from  + "')"); 
+
+			ps.execute();
+	
+		} catch (SQLException e) {
+			System.out.println("Connection Failed! Check output console");
+			e.printStackTrace();
+		}
+
+		
+	}
+
 }

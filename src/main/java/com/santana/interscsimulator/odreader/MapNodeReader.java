@@ -31,7 +31,7 @@ import com.santana.interscsimulator.entity.MapPoint;
  *
  */
 
-public class MapReader {
+public class MapNodeReader {
 	
 	public static void main(String args[])
 			throws ParserConfigurationException, SAXException, IOException, XPathExpressionException {
