@@ -378,5 +378,26 @@ public class Connector {
 
 		
 	}
+	
+	public static MapPoint getLatLongByLinkId(String linkId) {
+		MapPoint point = new MapPoint();
+		try {
+
+			String sql = "SELECT lat, lon from link where id =  '" + linkId + "'";
+
+			PreparedStatement ps = connection.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery();
+			while (rs.next()) {
+				point.setLat(rs.getFloat(1));
+				point.setLon(rs.getFloat(2));
+				return point;
+			}
+
+		} catch (SQLException e) {
+			System.out.println("Connection Failed! Check output console");
+			e.printStackTrace();
+		}
+		return null;
+	}
 
 }

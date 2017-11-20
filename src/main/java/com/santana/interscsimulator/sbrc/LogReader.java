@@ -6,6 +6,9 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.UnsupportedEncodingException;
 
+import com.santana.interscsimulator.db.Connector;
+import com.santana.interscsimulator.entity.MapPoint;
+
 
 public class LogReader {
 	
@@ -29,7 +32,9 @@ public class LogReader {
 		    	String carId = dados[2];
 		    	String linkId = dados[3];
 		    	
-		    	System.out.println("time: " + time);
+		    	MapPoint point = Connector.getLatLongByLinkId(linkId);
+		    	
+		    	System.out.println("time: " + time + " " + point.getLat());
 		    	    	
 		    	
 		    }
