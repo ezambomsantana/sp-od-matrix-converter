@@ -4,11 +4,11 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
+import java.util.HashMap;
 
 import com.santana.interscsimulator.db.Connector;
-import com.santana.interscsimulator.entity.MapPoint;
-
 
 public class LogReader {
 	
@@ -16,7 +16,11 @@ public class LogReader {
 		
 		File file = new File("/home/eduardo/entrada/sbrc/events.csv");
 		BufferedReader reader = null;
-
+		
+		PrintWriter writer = new PrintWriter("/home/eduardo/entrada/sbrc/events_lat_long.csv", "UTF-8");
+	    
+		HashMap<String, float[]> links = Connector.getAllLinks();
+		
 		try {
 		    reader = new BufferedReader(new FileReader(file));
 		    String text = null;
@@ -31,13 +35,21 @@ public class LogReader {
 		    	String event = dados[1];
 		    	String carId = dados[2];
 		    	String linkId = dados[3];
+
+		    	float [] point = links.get(linkId);
+		    	StringBuilder builder = new StringBuilder();
+		    	builder.append(time).append(",").
+		    		append(event).append(",").
+		    		append(carId).append(",").
+		    		append(point[0]).append(",").
+		    		append(point[1]);
 		    	
-		    	MapPoint point = Connector.getLatLongByLinkId(linkId);
 		    	
-		    	System.out.println("time: " + time + " " + point.getLat());
-		    	    	
+		    	writer.println(builder.toString());		    			    	    	
 		    	
 		    }
+		    
+		    writer.close();
 
 		} catch (Exception e) {
 			e.printStackTrace();

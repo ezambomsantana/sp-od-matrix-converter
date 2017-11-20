@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import com.santana.interscsimulator.entity.Hospital;
@@ -392,6 +393,30 @@ public class Connector {
 				point.setLon(rs.getFloat(2));
 				return point;
 			}
+
+		} catch (SQLException e) {
+			System.out.println("Connection Failed! Check output console");
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	public static HashMap<String, float[]> getAllLinks() {
+		HashMap<String, float[]>  point = new HashMap<String, float[]> ();
+		try {
+
+			String sql = "SELECT id, lat, lon from link";
+
+			PreparedStatement ps = connection.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery();
+			while (rs.next()) {
+				String id = rs.getString(1);
+				float lat = rs.getFloat(2);
+				float lon = rs.getFloat(3);
+				float [] directions = { lat , lon };
+				point.put(id, directions);
+			}
+			return point;
 
 		} catch (SQLException e) {
 			System.out.println("Connection Failed! Check output console");
