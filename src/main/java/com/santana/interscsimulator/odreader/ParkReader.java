@@ -25,11 +25,11 @@ import com.santana.interscsimulator.db.Connector;
  *
  */
 
-public class EstacionamentoReader {
+public class ParkReader {
 	
 	private static final String inputFile = "/home/eduardo/entrada/estacionamentos.xml";
 	private static final String inputFile2 = "/home/eduardo/entrada/estacionamentos2.xml";
-	private static final String outputFile = "/home/eduardo/entrada/park.xml";
+	private static final String outputFile = "/home/eduardo/entrada/park.csv";
 	
 	public static void main(String args[])
 			throws ParserConfigurationException, SAXException, IOException, XPathExpressionException {
@@ -39,9 +39,13 @@ public class EstacionamentoReader {
 		DocumentBuilder builder = factory.newDocumentBuilder();
 		Document docMap = builder.parse(inputFile);
 		
+		String option = "csv";
+		
 		PrintWriter writer = new PrintWriter(outputFile, "UTF-8");
 
-	    writer.println("<park>");	 
+		if (option.equals("xml")) {
+			writer.println("<park>");	
+		}
 	    
 	    StringBuilder sb = new StringBuilder();
 		
@@ -73,19 +77,27 @@ public class EstacionamentoReader {
 				}
 				
 				
-				
-				sb.append("    <spot uuid=\"");
-				sb.append(id);
-				sb.append("\" node=\"");
-				sb.append(idsOrigin[0]);
-				sb.append("\" lat=\"");
-				sb.append(lat);
-				sb.append("\" lon=\"");
-				sb.append(lon);
-				sb.append("\" />\n");
-				
-				
-				
+
+				if (option.equals("xml")) {
+					sb.append("    <spot uuid=\"");
+					sb.append(id);
+					sb.append("\" node=\"");
+					sb.append(idsOrigin[0]);
+					sb.append("\" lat=\"");
+					sb.append(lat);
+					sb.append("\" lon=\"");
+					sb.append(lon);
+					sb.append("\" />\n");
+				} else {
+					sb.append(id);
+					sb.append(";");
+					sb.append(idsOrigin[0]);
+					sb.append(";");
+					sb.append(lat);
+					sb.append(";");
+					sb.append(lon);
+					sb.append("\n");
+				}	
 			}
 
 		}
@@ -120,16 +132,27 @@ public class EstacionamentoReader {
 				}
 				
 				
-				
-				sb.append("    <spot uuid=\"");
-				sb.append(id);
-				sb.append("\" node=\"");
-				sb.append(idsOrigin[0]);
-				sb.append("\" lat=\"");
-				sb.append(lat);
-				sb.append("\" lon=\"");
-				sb.append(lon);
-				sb.append("\" />\n");							
+
+				if (option.equals("xml")) {
+					sb.append("    <spot uuid=\"");
+					sb.append(id);
+					sb.append("\" node=\"");
+					sb.append(idsOrigin[0]);
+					sb.append("\" lat=\"");
+					sb.append(lat);
+					sb.append("\" lon=\"");
+					sb.append(lon);
+					sb.append("\" />\n");	
+				} else {
+					sb.append(id);
+					sb.append(";");
+					sb.append(idsOrigin[0]);
+					sb.append(";");
+					sb.append(lat);
+					sb.append(";");
+					sb.append(lon);
+					sb.append("\n");
+				}
 				
 			}
 
@@ -137,7 +160,9 @@ public class EstacionamentoReader {
 		
 		writer.println(sb.toString());
 
-	    writer.println("</park>");
+		if (option.equals("xml")) {
+			writer.println("</park>");
+		}
 	    writer.close();	
 		
 
