@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import com.santana.interscsimulator.db.Connector;
 import com.santana.interscsimulator.entity.Car;
 
 public class VanetGenerator {
@@ -30,6 +31,8 @@ public class VanetGenerator {
 		int nextCar = 0;
 		int currentTimestamp = 1;
 		int lastTimestamp = 1;
+
+		HashMap<String, float[]> links = Connector.getAllLinks();
 		
 		try {
 			
@@ -46,13 +49,14 @@ public class VanetGenerator {
 		    	String linkId = dados[3];
 		    	
 
+		    	float [] point = links.get(linkId);
 		    	StringBuilder builder = new StringBuilder();
 		    	currentTimestamp = Integer.parseInt(time);
 
 	    		Car carToSave = new Car();
 	    		carToSave.setCarId(carId);
-	    		carToSave.setLat(linkId);
-	    		carToSave.setLon(linkId);
+	    		carToSave.setLat("" + point[0]);
+	    		carToSave.setLon("" + point[1]);
 	    		carToSave.setTime(time);
 
 		    	// new time
@@ -60,7 +64,7 @@ public class VanetGenerator {
 		    		
 		    		int diferenca = currentTimestamp - lastTimestamp;		    		
 		    		
-		    		if (currentTimestamp > 15700) {
+		    		if (currentTimestamp > 20700) {
 		    			break;
 		    		}
 		    		
@@ -100,12 +104,12 @@ public class VanetGenerator {
 			    	builder.append("$node_(")
 			    		.append(car)
 			    		.append(") set X_")
-			    		.append(linkId).append("\n");
+			    		.append(point[0]).append("\n");
 
 			    	builder.append("$node_(")
 			    		.append(car)
 			    		.append(") set Y_")
-			    		.append(linkId)
+			    		.append(point[1])
 			    		.append("\n");
 
 			    	builder.append("$node_(")
@@ -117,9 +121,9 @@ public class VanetGenerator {
 			    		.append(" \"$node_(")
 			    		.append(car)
 			    		.append(") setdest ")
-			    		.append(linkId)
+			    		.append(point[0])
 			    		.append(" ")
-			    		.append(linkId)
+			    		.append(point[1])
 			    		.append(" ")
 			    		.append(0)
 			    		.append("\"\n");
@@ -131,8 +135,8 @@ public class VanetGenerator {
 		 
 		    		Car car = carsId.get(carId);
 		    		car.setCarId(carId);
-		    		car.setLat(linkId);
-		    		car.setLon(linkId);
+		    		car.setLat("" + point[0]);
+		    		car.setLon("" + point[1]);
 		    		car.setTime(time);
 		    		
 			    	builder.append("$ns_ at ")
@@ -140,9 +144,9 @@ public class VanetGenerator {
 		    		.append(" \"$node_(")
 		    		.append(car.getId())
 		    		.append(") setdest ")
-		    		.append(linkId)
+		    		.append(point[0])
 		    		.append(" ")
-		    		.append(linkId)
+		    		.append(point[1])
 		    		.append(" ")
 		    		.append(0)
 		    		.append("\"\n");
@@ -154,8 +158,8 @@ public class VanetGenerator {
 
 		    		Car car = carsId.get(carId);
 		    		car.setCarId(carId);
-		    		car.setLat(linkId);
-		    		car.setLon(linkId);
+		    		car.setLat("" + point[0]);
+		    		car.setLon("" + point[1]);
 		    		car.setTime(time);
 
 			    	builder.append("$ns_ at ")
@@ -163,9 +167,9 @@ public class VanetGenerator {
 		    		.append(" \"$node_(")
 		    		.append(car.getId())
 		    		.append(") setdest ")
-		    		.append(linkId)
+		    		.append(point[0])
 		    		.append(" ")
-		    		.append(linkId)
+		    		.append(point[1])
 		    		.append(" ")
 		    		.append(0)
 		    		.append("\"\n");
