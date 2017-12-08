@@ -10,16 +10,17 @@ import java.util.HashMap;
 
 import com.santana.interscsimulator.db.Connector;
 
-public class LogReader {
-	
+public class CutFileInterval {
+
 	public static void main(String[] args) throws FileNotFoundException, UnsupportedEncodingException {
 		
-		File file = new File("/home/eduardo/Doutorado/sp_completo/events.csv");
+		File file = new File("/home/eduardo/Doutorado/sp_completo/events_lat_long.csv");
 		BufferedReader reader = null;
 		
-		PrintWriter writer = new PrintWriter("/home/eduardo/Doutorado/sp_completo/events_lat_long.csv", "UTF-8");
+		PrintWriter writer = new PrintWriter("/home/eduardo/Doutorado/sp_completo/events_lat_long_interval.csv", "UTF-8");
 	    
-		HashMap<String, float[]> links = Connector.getAllLinks();
+		int start = 28700;
+		int finish = 29500;
 		
 		try {
 		    reader = new BufferedReader(new FileReader(file));
@@ -32,26 +33,39 @@ public class LogReader {
 		    	String [] dados = text.split(";");
 		    	
 		    	String time = dados[0];
+		    	int timeInt = Integer.parseInt(time);
+		    	
+		    	if (timeInt < start) {
+		    		continue;
+		    	}
+		    	
+		    	if (timeInt > finish) {
+		    		break;
+		    	}
+		    	
+		    	
 		    	String event = dados[1];
 		    	String carId = dados[2];
-		    	String linkId = dados[3];
+		    	String lat = dados[3];
+		    	String lon = dados[4];
 		    	
-		    	float [] point = links.get(linkId);
+		    	System.out.println(time);
+		    	
 		    	StringBuilder builder = new StringBuilder();
 		    	builder.append(time).append(";").
 		    		append(event).append(";").
 		    		append(carId).append(";").
-		    		append(point[0]).append(";").
-		    		append(point[1]);
+		    		append(lat).append(";").
+		    		append(lon);
 		    	
 		    	
 		    	if (event.equals("arrival")) {
-		    		String totalTime = dados[4];
-		    		String distance = dados[5]; 
+		    		String totalTime = dados[5];
+		    		String distance = dados[6]; 
 		    		
-		    		builder.append(";")
-		    			.append(totalTime).append(";")
-		    			.append(distance);
+		    //		builder.append(";")
+		    	//		.append(totalTime).append(";")
+		    		//	.append(distance);
 		    	}
 
 		    	
@@ -68,5 +82,5 @@ public class LogReader {
 		
 
 	}
-
+	
 }
