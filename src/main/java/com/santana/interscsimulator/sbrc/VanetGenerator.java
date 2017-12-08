@@ -152,7 +152,7 @@ public class VanetGenerator {
 		    		.append("\"\n");
 			    	carsTime.put(carId + currentTimestamp, car);
 		    		
-		    	} else if (event.equals("arrive")) {
+		    	} else if (event.equals("arrival")) {
 		    		
 		    		listCars.remove(carId);
 
