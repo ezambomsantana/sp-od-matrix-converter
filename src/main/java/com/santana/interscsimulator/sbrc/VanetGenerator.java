@@ -31,8 +31,6 @@ public class VanetGenerator {
 		int nextCar = 0;
 		int currentTimestamp = 1;
 		int lastTimestamp = 1;
-
-		HashMap<String, float[]> links = Connector.getAllLinks();
 		
 		try {
 			
@@ -46,10 +44,11 @@ public class VanetGenerator {
 		    	String time = dados[0];
 		    	String event = dados[1];
 		    	String carId = dados[2];
-		    	String linkId = dados[3];
+		    	float lat = Float.parseFloat(dados[3]);
+		    	float lon = Float.parseFloat(dados[4]);
 		    	
 
-		    	float [] point = links.get(linkId);
+		    	float [] point = { lat , lon };
 		    	StringBuilder builder = new StringBuilder();
 		    	currentTimestamp = Integer.parseInt(time);
 
@@ -64,7 +63,7 @@ public class VanetGenerator {
 		    		
 		    		int diferenca = currentTimestamp - lastTimestamp;		    		
 		    		
-		    		if (currentTimestamp > 20700) {
+		    		if (currentTimestamp > 28800) {
 		    			break;
 		    		}
 		    		
@@ -134,29 +133,80 @@ public class VanetGenerator {
 		    	} else if (event.equals("move")) {
 		 
 		    		Car car = carsId.get(carId);
-		    		car.setCarId(carId);
-		    		car.setLat("" + point[0]);
-		    		car.setLon("" + point[1]);
-		    		car.setTime(time);
 		    		
-			    	builder.append("$ns_ at ")
-		    		.append(time)
-		    		.append(" \"$node_(")
-		    		.append(car.getId())
-		    		.append(") setdest ")
-		    		.append(point[0])
-		    		.append(" ")
-		    		.append(point[1])
-		    		.append(" ")
-		    		.append(0)
-		    		.append("\"\n");
-			    	carsTime.put(carId + currentTimestamp, car);
+		    		if (car != null) {
+		    		
+			    		car.setCarId(carId);
+			    		car.setLat("" + point[0]);
+			    		car.setLon("" + point[1]);
+			    		car.setTime(time);
+			    		
+				    	builder.append("$ns_ at ")
+			    		.append(time)
+			    		.append(" \"$node_(")
+			    		.append(car.getId())
+			    		.append(") setdest ")
+			    		.append(point[0])
+			    		.append(" ")
+			    		.append(point[1])
+			    		.append(" ")
+			    		.append(0)
+			    		.append("\"\n");
+				    	carsTime.put(carId + currentTimestamp, car);
+				    	
+			    	} else {
+			    					    		
+			    		listCars.add(carId);
+			    		int carCount = nextCar++;
+			    		carToSave.setId(carCount);
+			    		
+			    		carsId.put(carId, carToSave);
+			    		
+				    	builder.append("$node_(")
+				    		.append(carCount)
+				    		.append(") set X_")
+				    		.append(point[0]).append("\n");
+
+				    	builder.append("$node_(")
+				    		.append(carCount)
+				    		.append(") set Y_")
+				    		.append(point[1])
+				    		.append("\n");
+
+				    	builder.append("$node_(")
+				    		.append(carCount)
+				    		.append(") set Z_ 0\n");
+				    	
+				    	builder.append("$ns_ at ")
+				    		.append(time)
+				    		.append(" \"$node_(")
+				    		.append(carCount)
+				    		.append(") setdest ")
+				    		.append(point[0])
+				    		.append(" ")
+				    		.append(point[1])
+				    		.append(" ")
+				    		.append(0)
+				    		.append("\"\n");
+				    	
+				    	carsTime.put(carId + currentTimestamp, carToSave);
+			    		
+			    		
+			    		
+			    	}
+		    		
+		    		
 		    		
 		    	} else if (event.equals("arrival")) {
 		    		
 		    		listCars.remove(carId);
 
 		    		Car car = carsId.get(carId);
+		    		
+		    		if (car == null) {
+		    			continue;
+		    		}
+		    		
 		    		car.setCarId(carId);
 		    		car.setLat("" + point[0]);
 		    		car.setLon("" + point[1]);
