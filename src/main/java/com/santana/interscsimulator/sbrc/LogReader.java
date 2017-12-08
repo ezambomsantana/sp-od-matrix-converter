@@ -14,10 +14,10 @@ public class LogReader {
 	
 	public static void main(String[] args) throws FileNotFoundException, UnsupportedEncodingException {
 		
-		File file = new File("/home/eduardo/entrada/sbrc/events.csv");
+		File file = new File("/home/eduardo/Doutorado/events.csv");
 		BufferedReader reader = null;
 		
-		PrintWriter writer = new PrintWriter("/home/eduardo/entrada/sbrc/events_lat_long.csv", "UTF-8");
+		PrintWriter writer = new PrintWriter("/home/eduardo/events_lat_long.csv", "UTF-8");
 	    
 		HashMap<String, float[]> links = Connector.getAllLinks();
 		
@@ -35,15 +35,25 @@ public class LogReader {
 		    	String event = dados[1];
 		    	String carId = dados[2];
 		    	String linkId = dados[3];
-
+		    	
 		    	float [] point = links.get(linkId);
 		    	StringBuilder builder = new StringBuilder();
-		    	builder.append(time).append(",").
-		    		append(event).append(",").
-		    		append(carId).append(",").
-		    		append(point[0]).append(",").
+		    	builder.append(time).append(";").
+		    		append(event).append(";").
+		    		append(carId).append(";").
+		    		append(point[0]).append(";").
 		    		append(point[1]);
 		    	
+		    	
+		    	if (event.equals("arrival")) {
+		    		String totalTime = dados[4];
+		    		String distance = dados[5]; 
+		    		
+		    		builder.append(";")
+		    			.append(totalTime).append(";")
+		    			.append(distance);
+		    	}
+
 		    	
 		    	writer.println(builder.toString());		    			    	    	
 		    	
