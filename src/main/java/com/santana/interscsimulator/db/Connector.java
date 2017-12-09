@@ -47,6 +47,24 @@ public class Connector {
 		}
 
 	}
+	
+	public static void insertPointUTM(MapPoint point) {
+
+		try {
+
+
+				PreparedStatement ps = connection.prepareStatement("insert into point_utm(id, lat , lon) values("
+						+ point.getId() + "," 
+						+ point.getLat()  + "," 
+						+ point.getLon()  + ")");
+				ps.execute();
+
+		} catch (SQLException e) {
+			System.out.println("Connection Failed! Check output console");
+			e.printStackTrace();
+		}
+
+	}
 
 	public static void insertPoints(List<MapPoint> points) {
 
@@ -367,6 +385,24 @@ public class Connector {
 
 
 			PreparedStatement ps = connection.prepareStatement("insert into link(id, id_from) values('"
+					+ id + "','" 
+					+ from  + "')"); 
+
+			ps.execute();
+	
+		} catch (SQLException e) {
+			System.out.println("Connection Failed! Check output console");
+			e.printStackTrace();
+		}
+
+		
+	}
+	
+	public static void insertLinkUTM(String id, String from) {
+		try {
+
+
+			PreparedStatement ps = connection.prepareStatement("insert into link_utm(id, id_from) values('"
 					+ id + "','" 
 					+ from  + "')"); 
 
