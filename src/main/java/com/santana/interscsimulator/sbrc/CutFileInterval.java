@@ -20,7 +20,7 @@ public class CutFileInterval {
 		PrintWriter writer = new PrintWriter("/home/eduardo/Doutorado/sp_completo/events_lat_long_interval.csv", "UTF-8");
 	    
 		int start = 28700;
-		int finish = 29500;
+		int finish = 29000;
 		
 		try {
 		    reader = new BufferedReader(new FileReader(file));

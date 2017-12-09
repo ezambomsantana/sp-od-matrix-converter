@@ -20,8 +20,8 @@ import com.santana.interscsimulator.entity.Point;
  */
 public class ODReaderComplete {
 
-	private static final String inputFileName = "/home/eduardo/entrada/od/od.csv";
-	private static final String outputFileName = "/home/eduardo/entrada/od/trips.xml";
+	private static final String inputFileName = "/home/eduardo/Doutorado/od/od.csv";
+	private static final String outputFileName = "/home/eduardo/Doutorado/od/trips.xml";
 
 	public static void main(String[] args) throws IOException {
 		
@@ -81,6 +81,10 @@ public class ODReaderComplete {
 					
 					point.setMinuteStart(minuto);
 					
+					if (hora != 6 && hora != 7) {
+						continue;
+					}
+					
 					double[] coordsOrigin = UTM2Deg(23, latOrigin, lonOrigin);
 					double[] coordsDestination = UTM2Deg(23, latDestination, lonDestination);
 					
@@ -122,15 +126,15 @@ public class ODReaderComplete {
 					sb.append("\" link_origin=\"");
 					sb.append(idsOrigin[1]);
 					sb.append("\" count=\"");
-					sb.append(multiplicador);
+					sb.append(50);
 					sb.append("\" start=\"");
 					sb.append(point.getTimeStart());
 					sb.append("\" mode=\"");
 					sb.append("car");
-				//	sb.append("\" lat=\"");
-				//	sb.append(point.getLatDestination());
-				//	sb.append("\" lon=\"");
-				//	sb.append(point.getLonDestination());
+					sb.append("\" lat=\"");
+					sb.append(point.getLatDestination());
+					sb.append("\" lon=\"");
+					sb.append(point.getLonDestination());
 					sb.append("\" />");
 				    writer.println(sb.toString());
 				    i++;

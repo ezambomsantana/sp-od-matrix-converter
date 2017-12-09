@@ -460,5 +460,29 @@ public class Connector {
 		}
 		return null;
 	}
+	
+	public static HashMap<String, float[]> getAllLinksUTM() {
+		HashMap<String, float[]>  point = new HashMap<String, float[]> ();
+		try {
+
+			String sql = "SELECT id, lat, lon from link_utm";
+
+			PreparedStatement ps = connection.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery();
+			while (rs.next()) {
+				String id = rs.getString(1);
+				float lat = rs.getFloat(2);
+				float lon = rs.getFloat(3);
+				float [] directions = { lat , lon };
+				point.put(id, directions);
+			}
+			return point;
+
+		} catch (SQLException e) {
+			System.out.println("Connection Failed! Check output console");
+			e.printStackTrace();
+		}
+		return null;
+	}
 
 }

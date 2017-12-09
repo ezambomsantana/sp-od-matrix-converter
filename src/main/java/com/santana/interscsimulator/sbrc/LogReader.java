@@ -19,7 +19,7 @@ public class LogReader {
 		
 		PrintWriter writer = new PrintWriter("/home/eduardo/Doutorado/sp_completo/events_lat_long.csv", "UTF-8");
 	    
-		HashMap<String, float[]> links = Connector.getAllLinks();
+		HashMap<String, float[]> links = Connector.getAllLinksUTM();
 		
 		try {
 		    reader = new BufferedReader(new FileReader(file));
