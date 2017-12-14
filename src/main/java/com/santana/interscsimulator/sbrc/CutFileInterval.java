@@ -20,7 +20,7 @@ public class CutFileInterval {
 		PrintWriter writer = new PrintWriter("/home/eduardo/Doutorado/sp_completo/events_lat_long_interval.csv", "UTF-8");
 	    
 		int start = 28700;
-		int finish = 29000;
+		int finish = 28800;
 		
 		try {
 		    reader = new BufferedReader(new FileReader(file));
@@ -46,8 +46,11 @@ public class CutFileInterval {
 		    	
 		    	String event = dados[1];
 		    	String carId = dados[2];
-		    	String lat = dados[3];
-		    	String lon = dados[4];
+		    	
+		    	double [] coords = cartesian(Float.parseFloat(dados[3]), Float.parseFloat(dados[4]));
+		    	
+		    	String lat = "" + coords[0];
+		    	String lon = "" + coords[1];
 		    	
 		    	System.out.println(time);
 		    	
@@ -81,6 +84,17 @@ public class CutFileInterval {
 		
 		
 
+	}
+	
+	public static double[] cartesian(float lat, float lon) {
+		double [] coords = new double[2];
+		
+		coords[0] = Math.abs(6371 * Math.cos(lat) * Math.cos(lon));
+		coords[1] = Math.abs(6371 * Math.cos(lat) * Math.sin(lon));
+		
+		return coords;
+		
+		
 	}
 	
 }

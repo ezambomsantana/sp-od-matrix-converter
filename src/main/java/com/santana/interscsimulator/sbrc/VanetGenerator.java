@@ -32,6 +32,8 @@ public class VanetGenerator {
 		int currentTimestamp = 1;
 		int lastTimestamp = 1;
 		
+		int initialTime = 28700;
+		
 		try {
 			
 		    reader = new BufferedReader(new FileReader(file));
@@ -41,7 +43,10 @@ public class VanetGenerator {
 		    	
 		    	String [] dados = text.split(";");
 		    	
-		    	String time = dados[0];
+		    	String timeString = dados[0];
+		    	
+		    	int time = Integer.parseInt(timeString) - initialTime;
+ 		    	
 		    	String event = dados[1];
 		    	String carId = dados[2];
 		    	float lat = Float.parseFloat(dados[3]);
@@ -50,22 +55,18 @@ public class VanetGenerator {
 
 		    	float [] point = { lat , lon };
 		    	StringBuilder builder = new StringBuilder();
-		    	currentTimestamp = Integer.parseInt(time);
+		    	currentTimestamp = time;
 
 	    		Car carToSave = new Car();
 	    		carToSave.setCarId(carId);
 	    		carToSave.setLat("" + point[0]);
 	    		carToSave.setLon("" + point[1]);
-	    		carToSave.setTime(time);
+	    		carToSave.setTime("" + time);
 
 		    	// new time
 		    	if (currentTimestamp != lastTimestamp) {
 		    		
 		    		int diferenca = currentTimestamp - lastTimestamp;		    		
-		    		
-		    		if (currentTimestamp > 28800) {
-		    			break;
-		    		}
 		    		
 		    		for (int i = 0; i < diferenca ; i++) {		    		
 			    		for (String carTest : listCars) {
@@ -139,7 +140,7 @@ public class VanetGenerator {
 			    		car.setCarId(carId);
 			    		car.setLat("" + point[0]);
 			    		car.setLon("" + point[1]);
-			    		car.setTime(time);
+			    		car.setTime("" + time);
 			    		
 				    	builder.append("$ns_ at ")
 			    		.append(time)
@@ -210,7 +211,7 @@ public class VanetGenerator {
 		    		car.setCarId(carId);
 		    		car.setLat("" + point[0]);
 		    		car.setLon("" + point[1]);
-		    		car.setTime(time);
+		    		car.setTime("" + time);
 
 			    	builder.append("$ns_ at ")
 		    		.append(time)
