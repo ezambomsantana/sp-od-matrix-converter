@@ -103,12 +103,12 @@ public class VanetGenerator {
 		    		
 			    	builder.append("$node_(")
 			    		.append(car)
-			    		.append(") set X_")
+			    		.append(") set X_ ")
 			    		.append(point[0]).append("\n");
 
 			    	builder.append("$node_(")
 			    		.append(car)
-			    		.append(") set Y_")
+			    		.append(") set Y_ ")
 			    		.append(point[1])
 			    		.append("\n");
 
@@ -165,12 +165,12 @@ public class VanetGenerator {
 			    		
 				    	builder.append("$node_(")
 				    		.append(carCount)
-				    		.append(") set X_")
+				    		.append(") set X_ ")
 				    		.append(point[0]).append("\n");
 
 				    	builder.append("$node_(")
 				    		.append(carCount)
-				    		.append(") set Y_")
+				    		.append(") set Y_ ")
 				    		.append(point[1])
 				    		.append("\n");
 

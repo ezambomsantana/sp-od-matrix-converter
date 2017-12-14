@@ -95,6 +95,9 @@ public class CutFileInterval {
 		coords[0] = Math.abs(6371 * Math.cos(lat) * Math.cos(lon));
 		coords[1] = Math.abs(6371 * Math.cos(lat) * Math.sin(lon));
 		
+		coords[0] = Math.round(coords[0]*100.0)/10.0;
+		coords[1] = Math.round(coords[1]*100.0)/10.0;
+		
 		return coords;
 		
 		
