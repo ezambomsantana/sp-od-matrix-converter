@@ -151,7 +151,7 @@ public class VanetGenerator {
 			    		.append(" ")
 			    		.append(point[1])
 			    		.append(" ")
-			    		.append(0)
+			    		.append(10)
 			    		.append("\"\n");
 				    	carsTime.put(carId + currentTimestamp, car);
 				    	

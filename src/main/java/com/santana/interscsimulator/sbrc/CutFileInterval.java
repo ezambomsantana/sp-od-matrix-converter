@@ -86,8 +86,11 @@ public class CutFileInterval {
 
 	}
 	
-	public static double[] cartesian(float lat, float lon) {
+	public static double[] cartesian(double lat, double lon) {
 		double [] coords = new double[2];
+		
+		lat = lat * Math.PI / 180;
+		lon = lon * Math.PI / 180;
 		
 		coords[0] = Math.abs(6371 * Math.cos(lat) * Math.cos(lon));
 		coords[1] = Math.abs(6371 * Math.cos(lat) * Math.sin(lon));
