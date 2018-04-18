@@ -56,22 +56,24 @@ public class ODReaderExperiments {
 		    	
 		    	String [] dados = text.split(";");
 		    	
-		    	if (dados[103] == null || dados[103].equals("")) {
+		    	if (dados[116] == null || dados[116].equals("")) {
 		    		continue;
 		    	}
 		    	
-				int modeNumero = Integer.parseInt(dados[103]);
-				
+				int modeNumero = Integer.parseInt(dados[116]);
 				String mode = "";
 				if (modeNumero == 9 || modeNumero == 1) {
 					mode = "bus"; // bus
 				} else if (modeNumero == 16) {
 					mode = "walk";
-				} else if (modeNumero == 12) {
+				} else if (modeNumero == 12 || modeNumero == 13) {
 					mode = "subway"; //subway
-				} else {
+				} else if (modeNumero == 6){
 					mode = "car";
-				} 
+				} else {
+					System.out.println("nenhum modo");
+					continue;
+				}
 				
 			    int multiplicador = 0;					
 				double latOrigin = 0;
@@ -279,8 +281,14 @@ public class ODReaderExperiments {
 										selectedPath = BusTravelGenerator.path;
 										idBusStationOrigin = ro;
 										idBusStationDestination = rd;
+										if (selectedBuses.size() == 1) {
+											break;
+										}
 									}
 								}								
+							}
+							if (selectedBuses != null && selectedBuses.size() == 1) {
+								break;
 							}
 						}
 						
