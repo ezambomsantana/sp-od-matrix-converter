@@ -5,7 +5,6 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -28,8 +27,8 @@ import com.santana.interscsimulator.entity.Point;
  */
 public class ODReaderNewTransportType {
 
-	private static final String inputFileName = "/home/eduardo/entrada/paraisopolis/matriz.xlsx";
-	private static final String outputFileName = "/home/eduardo/entrada/paraisopolis/trips.xml";
+	private static final String inputFileName = "/home/eduardo/od.xlsx";
+	private static final String outputFileName = "/home/eduardo/trips.xml";
 
 	public static void main(String[] args) throws IOException {
 		
